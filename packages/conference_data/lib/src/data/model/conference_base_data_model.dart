@@ -1,5 +1,6 @@
-import 'package:fluttercon/features/conference_base/data/model/session_model.dart';
-import 'package:fluttercon/features/conference_base/data/model/speaker_model.dart';
+
+import 'package:conference_data/src/data/model/session_model.dart';
+import 'package:conference_data/src/data/model/speaker_model.dart';
 
 class ConferenceBaseDataModel {
   ConferenceBaseDataModel({
