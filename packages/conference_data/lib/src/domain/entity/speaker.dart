@@ -1,51 +1,34 @@
-class SpeakerModel {
-  SpeakerModel({
-    required String id,
-    required String fullName,
-    String? bio,
-    String? tagLine,
-    String? profilePictureUrl,
-    List<dynamic>? sessionIds,
-    // TODO(rohan20): Add "links"
-  })  : _id = id,
-        _fullName = fullName,
-        _bio = bio,
-        _tagLine = tagLine,
-        _profilePictureUrl = profilePictureUrl,
-        _sessionIds = sessionIds;
+import 'package:conference_data/src/data/model/speaker_model.dart';
 
-  factory SpeakerModel.fromJson(Map<String, dynamic> json) {
-    return SpeakerModel(
-      id: json['id'] as String,
-      fullName: json['fullName'] as String,
-      bio: json['bio'] as String?,
-      tagLine: json['tagLine'] as String?,
-      profilePictureUrl: json['profilePicture'] as String?,
-      sessionIds: json['sessions'] as List<dynamic>?,
+class Speaker {
+  Speaker({
+    required this.id,
+    required this.fullName,
+    required this.bio,
+    required this.tagLine,
+    required this.profilePictureUrl,
+    // TODO(rohan20): Add "sessions"
+    // TODO(rohan20): Add "links"
+  });
+
+  factory Speaker.fromSpeakerModel(SpeakerModel speakerModel) {
+    return Speaker(
+      id: speakerModel.id,
+      fullName: speakerModel.fullName,
+      bio: speakerModel.bio,
+      tagLine: speakerModel.tagLine,
+      profilePictureUrl: speakerModel.profilePictureUrl,
     );
   }
 
-  String _id;
-  String _fullName;
-  String? _bio;
-  String? _tagLine;
-  String? _profilePictureUrl;
-  List<dynamic>? _sessionIds;
+  final String id;
+  final String fullName;
+  final String bio;
+  final String tagLine;
+  final String profilePictureUrl;
 
   @override
   String toString() {
-    return 'SpeakerModel{_id: $_id, _fullName: $_fullName, _bio: $_bio, _tagLine: $_tagLine, _profilePictureUrl: $_profilePictureUrl, _sessionIds: $_sessionIds}';
+    return 'Speaker{id: $id, fullName: $fullName, bio: $bio, tagLine: $tagLine, profilePictureUrl: $profilePictureUrl}';
   }
-
-  String get id => _id;
-
-  String get fullName => _fullName;
-
-  String get bio => _bio ?? '';
-
-  String get tagLine => _tagLine ?? '';
-
-  String get profilePictureUrl => _profilePictureUrl ?? '';
-
-  List<dynamic> get sessionIds => _sessionIds ?? [];
 }
