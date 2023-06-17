@@ -10,6 +10,8 @@ dependencies:
   api_client:
     path: ../api_client
   get_it: ^7.6.0
+  util:
+    path: ../util
 
 dev_dependencies:
   mocktail: ^0.3.0
