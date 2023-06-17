@@ -29,15 +29,15 @@ class Session {
     );
   }
 
-  late final String id;
-  late final String title;
-  late final DateTime startsAt;
-  late final DateTime endsAt;
-  late final String description;
-  late final bool isServiceSession;
-  late final bool isPlenumSession;
-  late final int roomId;
-  late final String room;
+  final String id;
+  final String title;
+  final DateTime startsAt;
+  final DateTime endsAt;
+  final String description;
+  final bool isServiceSession;
+  final bool isPlenumSession;
+  final int roomId;
+  final String room;
 
   @override
   String toString() {
