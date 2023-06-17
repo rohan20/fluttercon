@@ -2,14 +2,14 @@
 import 'package:conference_data/src/data/model/session_model.dart';
 import 'package:conference_data/src/data/model/speaker_model.dart';
 
-class ConferenceBaseDataModel {
-  ConferenceBaseDataModel({
+class ConferenceDataModel {
+  ConferenceDataModel({
     this.sessions = const [],
     this.speakers = const [],
   });
 
-  factory ConferenceBaseDataModel.fromJson(Map<String, dynamic> json) {
-    return ConferenceBaseDataModel(
+  factory ConferenceDataModel.fromJson(Map<String, dynamic> json) {
+    return ConferenceDataModel(
       sessions: json['sessions'] != null
           ? (json['sessions'] as List<dynamic>)
               .map<SessionModel>((sessionJson) => SessionModel.fromJson(sessionJson as Map<String, dynamic>))
@@ -28,6 +28,6 @@ class ConferenceBaseDataModel {
 
   @override
   String toString() {
-    return 'ConferenceBaseDataModel(sessions: $sessions, speakers: $speakers)';
+    return 'ConferenceDataModel(sessions: $sessions, speakers: $speakers)';
   }
 }

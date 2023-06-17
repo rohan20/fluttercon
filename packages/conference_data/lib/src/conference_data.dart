@@ -14,8 +14,8 @@ class ConferenceData {
   void _initDependencies() {
     final apiClient = ApiClient(baseUrl: conferenceBaseUrl);
 
-    final conferenceBaseRemoteDataSource = ConferenceDataRemoteDataSourceImpl(apiClient: apiClient);
-
-    injector.registerLazySingleton<ConferenceDataRemoteDataSource>(() => conferenceBaseRemoteDataSource);
+    injector.registerLazySingleton<ConferenceDataRemoteDataSource>(
+      () => ConferenceDataRemoteDataSourceImpl(apiClient: apiClient),
+    );
   }
 }

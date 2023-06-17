@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:api_client/api_client.dart';
 import 'package:conference_data/src/data/data_source/conference_data_remote_data_source.dart';
-import 'package:conference_data/src/data/model/conference_base_data_model.dart';
+import 'package:conference_data/src/data/model/conference_data_model.dart';
 
 class ConferenceDataRemoteDataSourceImpl implements ConferenceDataRemoteDataSource {
   const ConferenceDataRemoteDataSourceImpl({required this.apiClient});
@@ -10,7 +10,7 @@ class ConferenceDataRemoteDataSourceImpl implements ConferenceDataRemoteDataSour
   final ApiClient apiClient;
 
   @override
-  Future<ConferenceBaseDataModel> getConferenceBaseData() async {
+  Future<ConferenceDataModel> getConferenceData() async {
     try {
       final response = await apiClient.get('view/All');
 
@@ -21,7 +21,7 @@ class ConferenceDataRemoteDataSourceImpl implements ConferenceDataRemoteDataSour
         );
       }
 
-      return ConferenceBaseDataModel.fromJson(response.data as Map<String, dynamic>);
+      return ConferenceDataModel.fromJson(response.data as Map<String, dynamic>);
     } on ApiClientError {
       rethrow;
     } catch (e) {
