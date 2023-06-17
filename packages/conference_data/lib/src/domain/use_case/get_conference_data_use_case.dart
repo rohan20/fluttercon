@@ -1,13 +1,13 @@
 import 'package:conference_data/src/di/injector.dart';
-import 'package:conference_data/src/domain/entity/session.dart';
+import 'package:conference_data/src/domain/entity/conference_data.dart';
 import 'package:conference_data/src/domain/repository/conference_data_repository.dart';
 import 'package:util/util.dart';
 
-class GetSessionsUseCase extends UseCase<List<Session>, NoParams> {
-  GetSessionsUseCase();
+class GetConferenceDataUseCase extends UseCase<ConferenceData, NoParams> {
+  GetConferenceDataUseCase();
 
   @override
-  Future<Result<Failure, List<Session>>> call([NoParams? params]) async {
+  Future<Result<Failure, ConferenceData>> call([NoParams? params]) async {
     final conferenceDataRepository = injector.get<ConferenceDataRepository>();
 
     final conferenceDataResult = await conferenceDataRepository.getConferenceData();
@@ -17,7 +17,7 @@ class GetSessionsUseCase extends UseCase<List<Session>, NoParams> {
     } else {
       final conferenceData = conferenceDataResult.getSuccess()!;
 
-      return Success(conferenceData.sessions);
+      return Success(conferenceData);
     }
   }
 }

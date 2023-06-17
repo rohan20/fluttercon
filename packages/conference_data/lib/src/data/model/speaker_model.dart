@@ -47,5 +47,5 @@ class SpeakerModel {
 
   String get profilePictureUrl => _profilePictureUrl ?? '';
 
-  List<dynamic> get sessionIds => _sessionIds ?? [];
+  List<String> get sessionIds => _sessionIds?.map<String>((dynamic id) => id.toString()).toList() ?? [];
 }

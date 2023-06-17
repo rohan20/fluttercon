@@ -72,7 +72,7 @@ class SessionModel {
 
   List<String> get speakerIds => (_speakerIds ?? const []).map((speakerId) => speakerId.toString()).toList();
 
-  List<num> get categoryIds => (_categoryIds ?? const []).map((categoryId) => categoryId as num? ?? -1).toList();
+  List<String> get categoryIds => (_categoryIds ?? const []).map((categoryId) => categoryId?.toString() ?? '').toList();
 
   int get roomId => _roomId ?? -1;
 

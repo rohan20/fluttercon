@@ -9,10 +9,10 @@ class Session {
     required this.description,
     required this.isServiceSession,
     required this.isPlenumSession,
-    // TODO(rohan20): Add speakers
-    // TODO(rohan20): Add categories
     required this.roomId,
     required this.room,
+    required this.speakerIds,
+    required this.categoryIds,
   });
 
   factory Session.fromSessionModel(SessionModel sessionModel) {
@@ -26,6 +26,8 @@ class Session {
       isPlenumSession: sessionModel.isPlenumSession,
       roomId: sessionModel.roomId,
       room: sessionModel.room,
+      speakerIds: sessionModel.speakerIds,
+      categoryIds: sessionModel.categoryIds,
     );
   }
 
@@ -38,9 +40,11 @@ class Session {
   final bool isPlenumSession;
   final int roomId;
   final String room;
+  final List<String> speakerIds;
+  final List<String> categoryIds;
 
   @override
   String toString() {
-    return 'Session(id: $id, title: $title, startsAt: $startsAt, endsAt: $endsAt, description: $description, isServiceSession: $isServiceSession, isPlenumSession: $isPlenumSession, roomId: $roomId, room: $room)';
+    return 'Session(id: $id, title: $title, startsAt: $startsAt, endsAt: $endsAt, description: $description, isServiceSession: $isServiceSession, isPlenumSession: $isPlenumSession, roomId: $roomId, room: $room, speakerIds: $speakerIds, categoryIds: $categoryIds)';
   }
 }
