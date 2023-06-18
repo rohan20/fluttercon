@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/pages/sessions_page.dart';
+import 'package:fluttercon/features/home/presentation/pages/speakers_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -60,7 +61,7 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
         child: Builder(
           builder: (context) {
             if (_selectedTab == _Tab.speakers) {
-              return const Text('Speakers');
+              return const SpeakersPage();
             } else if (_selectedTab == _Tab.favourites) {
               return const Text('Favourites');
             } else {
