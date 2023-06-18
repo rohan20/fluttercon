@@ -1,5 +1,5 @@
 import 'package:conference_data/conference_data.dart';
-import 'package:fluttercon/features/home/presentation/conference_constants.dart';
+import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 
 class HomeState {
   const HomeState({
@@ -36,17 +36,15 @@ class HomeState {
     return sessions.toList()..sort((a, b) => a.startsAt.compareTo(b.startsAt));
   }
 
-  List<Session> get day1SessionsSortedByStartTime {
-    return _sessionsSortedByStartTime.where((session) => session.startsAt.isSameDayAs(conferenceDay1)).toList();
+  List<Session> _getSessionsForDay(DateTime day) {
+    return _sessionsSortedByStartTime.where((session) => session.startsAt.isSameDayAs(day)).toList();
   }
 
-  List<Session> get day2SessionsSortedByStartTime {
-    return _sessionsSortedByStartTime.where((session) => session.startsAt.isSameDayAs(conferenceDay2)).toList();
-  }
+  List<Session> get day1SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day1);
 
-  List<Session> get day3SessionsSortedByStartTime {
-    return _sessionsSortedByStartTime.where((session) => session.startsAt.isSameDayAs(conferenceDay3)).toList();
-  }
+  List<Session> get day2SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day2);
+
+  List<Session> get day3SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day3);
 }
 
 extension DateTimeExt on DateTime {

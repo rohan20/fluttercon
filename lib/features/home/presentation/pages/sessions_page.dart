@@ -2,7 +2,7 @@ import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
-import 'package:fluttercon/features/home/presentation/conference_constants.dart';
+import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 import 'package:intl/intl.dart';
 
 class SessionsPage extends StatelessWidget {
@@ -67,11 +67,11 @@ class _SessionsTabBarViewState extends State<_SessionsTabBarView> with SingleTic
   int get _initialIndex {
     final now = DateTime.now();
 
-    if (now.isAfter(conferenceDay3)) {
+    if (now.isAfter(ConferenceMetadata.day3)) {
       return 0;
-    } else if (now.isAfter(conferenceDay2)) {
+    } else if (now.isAfter(ConferenceMetadata.day2)) {
       return 2;
-    } else if (now.isAfter(conferenceDay1)) {
+    } else if (now.isAfter(ConferenceMetadata.day1)) {
       return 1;
     } else {
       return 0;
@@ -93,9 +93,9 @@ class _SessionsTabBarViewState extends State<_SessionsTabBarView> with SingleTic
         TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: tabDateFormat.format(conferenceDay1)),
-            Tab(text: tabDateFormat.format(conferenceDay2)),
-            Tab(text: tabDateFormat.format(conferenceDay3)),
+            Tab(text: tabDateFormat.format(ConferenceMetadata.day1)),
+            Tab(text: tabDateFormat.format(ConferenceMetadata.day2)),
+            Tab(text: tabDateFormat.format(ConferenceMetadata.day3)),
           ],
         ),
         const SizedBox(height: 12),
@@ -264,7 +264,7 @@ class _SessionFormat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (sessionFormat.id == sessionId) {
+    if (sessionFormat.id == ConferenceMetadata.sessionId) {
       return const SizedBox();
     }
 
@@ -298,11 +298,11 @@ extension DurationExt on int {
 extension CategoryExt on String {
   Color get backgroundColor {
     switch (this) {
-      case lightningTalkId:
+      case ConferenceMetadata.lightningTalkId:
         return Colors.blue.shade50;
-      case sessionId:
+      case ConferenceMetadata.sessionId:
         return Colors.orange.shade50;
-      case workshopId || keynoteId || panelDiscussionId:
+      case ConferenceMetadata.workshopId || ConferenceMetadata.keynoteId || ConferenceMetadata.panelDiscussionId:
         return Colors.green.shade50;
       default:
         return Colors.grey.shade200;
