@@ -27,6 +27,7 @@ class SessionsPage extends StatelessWidget {
             day3SessionsSortedByStartTime: state.day3SessionsSortedByStartTime,
             speakers: state.speakers,
             categories: state.categories,
+            rooms: state.rooms,
           );
         }
       },
@@ -41,6 +42,7 @@ class _SessionsTabBarView extends StatefulWidget {
     required this.day3SessionsSortedByStartTime,
     required this.speakers,
     required this.categories,
+    required this.rooms,
   });
 
   final List<Session> day1SessionsSortedByStartTime;
@@ -48,6 +50,7 @@ class _SessionsTabBarView extends StatefulWidget {
   final List<Session> day3SessionsSortedByStartTime;
   final List<Speaker> speakers;
   final List<Category> categories;
+  final List<Room> rooms;
 
   @override
   State<_SessionsTabBarView> createState() => _SessionsTabBarViewState();
@@ -106,16 +109,19 @@ class _SessionsTabBarViewState extends State<_SessionsTabBarView> with SingleTic
                 sessions: widget.day1SessionsSortedByStartTime,
                 speakers: widget.speakers,
                 categories: widget.categories,
+                rooms: widget.rooms,
               ),
               _SessionsList(
                 sessions: widget.day2SessionsSortedByStartTime,
                 speakers: widget.speakers,
                 categories: widget.categories,
+                rooms: widget.rooms,
               ),
               _SessionsList(
                 sessions: widget.day3SessionsSortedByStartTime,
                 speakers: widget.speakers,
                 categories: widget.categories,
+                rooms: widget.rooms,
               ),
             ],
           ),
@@ -130,11 +136,13 @@ class _SessionsList extends StatelessWidget {
     required this.sessions,
     required this.speakers,
     required this.categories,
+    required this.rooms,
   });
 
   final List<Session> sessions;
   final List<Speaker> speakers;
   final List<Category> categories;
+  final List<Room> rooms;
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +162,7 @@ class _SessionsList extends StatelessWidget {
 
             return isCategoryTypeSessionFormat && session.categoryIds.contains(category.id);
           }),
+          roomName: rooms.firstWhere((room) => room.id == session.roomId).name,
           showStartTime: !startsAtSameTimeAsPreviousSession,
           backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
         );
@@ -167,6 +176,7 @@ class _SessionsListItem extends StatelessWidget {
     required this.session,
     required this.speakers,
     required this.sessionFormat,
+    required this.roomName,
     required this.showStartTime,
     required this.backgroundColor,
   });
@@ -174,6 +184,7 @@ class _SessionsListItem extends StatelessWidget {
   final Session session;
   final List<Speaker> speakers;
   final Category sessionFormat;
+  final String roomName;
   final bool showStartTime;
   final Color backgroundColor;
 
@@ -207,18 +218,23 @@ class _SessionsListItem extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 8),
+                Text(
+                  speakers.map((speaker) => speaker.fullName).join(', '),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 8),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Text(
-                        speakers.map((speaker) => speaker.fullName).join(', '),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
+                    _SessionRoom(roomName: roomName),
+                    const SizedBox(width: 4),
+                    Row(
+                      children: [
+                        _SessionFormat(sessionFormat: sessionFormat),
+                        const SizedBox(width: 4),
+                        _SessionDuration(session: session),
+                      ],
                     ),
-                    const SizedBox(width: 4),
-                    _SessionFormat(sessionFormat: sessionFormat),
-                    const SizedBox(width: 4),
-                    _SessionDuration(session: session),
                   ],
                 ),
                 const SizedBox(height: 4),
