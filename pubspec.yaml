@@ -11,10 +11,15 @@ environment:
 dependencies:
   api_client:
     path: packages/api_client
+  conference_data:
+    path: packages/conference_data
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.3
+  flutter_svg: ^2.0.7
   get_it: ^7.6.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
