@@ -98,7 +98,6 @@ class _SessionsTabBarViewState extends State<_SessionsTabBarView> with SingleTic
             Tab(text: tabDateFormat.format(ConferenceMetadata.day3)),
           ],
         ),
-        const SizedBox(height: 12),
         Expanded(
           child: TabBarView(
             controller: _tabController,
@@ -121,7 +120,6 @@ class _SessionsTabBarViewState extends State<_SessionsTabBarView> with SingleTic
             ],
           ),
         ),
-        const SizedBox(height: 12),
       ],
     );
   }
@@ -141,6 +139,7 @@ class _SessionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 12),
       itemCount: sessions.length,
       itemBuilder: (BuildContext context, int index) {
         final session = sessions[index];
