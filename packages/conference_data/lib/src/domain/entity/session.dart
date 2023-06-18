@@ -38,7 +38,7 @@ class Session {
   final String description;
   final bool isServiceSession;
   final bool isPlenumSession;
-  final int roomId;
+  final String roomId;
   final String room;
   final List<String> speakerIds;
   final List<String> categoryIds;
