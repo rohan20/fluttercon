@@ -47,7 +47,7 @@ class _BottomNavigationBar extends StatefulWidget {
 class _BottomNavigationBarState extends State<_BottomNavigationBar> {
   _Tab _selectedTab = _Tab.sessions;
 
-  void _onItemTapped(int index) {
+  void _onBottomNavigationBarItemTapped(int index) {
     setState(() {
       _selectedTab = _Tab.values[index];
     });
@@ -69,7 +69,36 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: _BottomNavigationBarContent(
+        selectedIndex: _selectedTab.tabIndex,
+        onBottomNavigationBarItemTapped: _onBottomNavigationBarItemTapped,
+      ),
+    );
+  }
+}
+
+class _BottomNavigationBarContent extends StatelessWidget {
+  const _BottomNavigationBarContent({
+    required this.selectedIndex,
+    required this.onBottomNavigationBarItemTapped,
+  });
+
+  final int selectedIndex;
+  final ValueChanged<int> onBottomNavigationBarItemTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: BottomNavigationBar(
         unselectedFontSize: 14,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -88,9 +117,9 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
             label: 'Favourites',
           ),
         ],
-        currentIndex: _selectedTab.tabIndex,
+        currentIndex: selectedIndex,
         selectedItemColor: Theme.of(context).colorScheme.primary,
-        onTap: _onItemTapped,
+        onTap: onBottomNavigationBarItemTapped,
       ),
     );
   }
