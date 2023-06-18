@@ -1,38 +1,38 @@
-import 'package:conference_data/conference_data.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:fluttercon/di/injector.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
+import 'package:fluttercon/features/home/presentation/pages/sessions_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HomeBloc()..add(HomePageCreatedEvent()),
+      child: const _HomePageContent(),
+    );
+  }
+}
+
+class _HomePageContent extends StatelessWidget {
+  const _HomePageContent();
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Fluttercon Berlin 2023'),
+        title: SvgPicture.asset(
+          'assets/images/fluttercon.svg',
+          width: min(MediaQuery.of(context).size.width * 0.4, 150),
+
+        ),
       ),
       body: const Center(
         child: _BottomNavigationBar(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final conferenceDataResult = await injector.get<GetConferenceDataUseCase>().call();
-
-          if (conferenceDataResult.isError()) {
-            debugPrint('Failed to get conference data');
-          } else {
-            final conferenceData = conferenceDataResult.getSuccess();
-
-            debugPrint('Sessions: ${conferenceData!.sessions.length}');
-
-            final speakers = conferenceData.speakers;
-            debugPrint('Speakers: ${speakers.length}');
-            debugPrint("${speakers.firstWhere((speaker) => speaker.fullName == "Rohan Taneja")}");
-          }
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
@@ -46,28 +46,11 @@ class _BottomNavigationBar extends StatefulWidget {
 }
 
 class _BottomNavigationBarState extends State<_BottomNavigationBar> {
-  int _selectedIndex = 0;
-
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
+  _Tab _selectedTab = _Tab.sessions;
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedTab = _Tab.values[index];
     });
   }
 
@@ -75,7 +58,17 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: Builder(
+          builder: (context) {
+            if (_selectedTab == _Tab.speakers) {
+              return const Text('Speakers');
+            } else if (_selectedTab == _Tab.favourites) {
+              return const Text('Favourites');
+            } else {
+              return const SessionsPage();
+            }
+          },
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -92,10 +85,20 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
             label: 'Favourites',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: _selectedTab.tabIndex,
         selectedItemColor: Theme.of(context).colorScheme.primary,
         onTap: _onItemTapped,
       ),
     );
   }
+}
+
+enum _Tab {
+  sessions(0),
+  speakers(1),
+  favourites(2);
+
+  const _Tab(this.tabIndex);
+
+  final int tabIndex;
 }

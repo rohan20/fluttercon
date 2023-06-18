@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttercon/features/home/presentation/pages/home_page.dart';
 
 class FlutterconApp extends StatelessWidget {
   const FlutterconApp({super.key});
@@ -11,7 +12,7 @@ class FlutterconApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SizedBox(),
+      home: const HomePage(),
     );
   }
 }
