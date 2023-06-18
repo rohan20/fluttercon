@@ -1,0 +1,19 @@
+name: conference_data
+description: All things related to the conference data
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  api_client:
+    path: ../api_client
+  get_it: ^7.6.0
+  util:
+    path: ../util
+
+dev_dependencies:
+  mocktail: ^0.3.0
+  test: ^1.19.2
+  very_good_analysis: ^5.0.0+1
