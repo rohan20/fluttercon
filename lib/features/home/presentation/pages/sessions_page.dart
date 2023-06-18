@@ -264,8 +264,7 @@ class _SessionFormat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (sessionFormat.id == '164901') {
-      // Session
+    if (sessionFormat.id == sessionId) {
       return const SizedBox();
     }
 
@@ -299,11 +298,11 @@ extension DurationExt on int {
 extension CategoryExt on String {
   Color get backgroundColor {
     switch (this) {
-      case '164900': // Lightning Talk
+      case lightningTalkId:
         return Colors.blue.shade50;
-      case '164901': // Session
+      case sessionId:
         return Colors.orange.shade50;
-      case '164902' || '164908' || '164907': // Workshop / Keynote / Panel Discussion
+      case workshopId || keynoteId || panelDiscussionId:
         return Colors.green.shade50;
       default:
         return Colors.grey.shade200;
