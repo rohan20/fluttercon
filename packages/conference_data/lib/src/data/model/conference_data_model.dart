@@ -1,4 +1,4 @@
-
+import 'package:conference_data/src/data/model/category_parent_model.dart';
 import 'package:conference_data/src/data/model/session_model.dart';
 import 'package:conference_data/src/data/model/speaker_model.dart';
 
@@ -6,6 +6,7 @@ class ConferenceDataModel {
   ConferenceDataModel({
     this.sessions = const [],
     this.speakers = const [],
+    this.categoryParents = const [],
   });
 
   factory ConferenceDataModel.fromJson(Map<String, dynamic> json) {
@@ -20,14 +21,22 @@ class ConferenceDataModel {
               .map<SpeakerModel>((speakerJson) => SpeakerModel.fromJson(speakerJson as Map<String, dynamic>))
               .toList()
           : [],
+      categoryParents: json['categories'] != null
+          ? (json['categories'] as List<dynamic>)
+              .map<CategoryParentModel>(
+                (categoryParentJson) => CategoryParentModel.fromJson(categoryParentJson as Map<String, dynamic>),
+              )
+              .toList()
+          : [],
     );
   }
 
   final List<SessionModel> sessions;
   final List<SpeakerModel> speakers;
+  final List<CategoryParentModel> categoryParents;
 
   @override
   String toString() {
-    return 'ConferenceDataModel(sessions: $sessions, speakers: $speakers)';
+    return 'ConferenceDataModel(sessions: $sessions, speakers: $speakers, categoryParents: $categoryParents)';
   }
 }
