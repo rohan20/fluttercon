@@ -43,6 +43,8 @@ class Session {
   final List<String> speakerIds;
   final List<String> categoryIds;
 
+  int get duration => endsAt.difference(startsAt).inMinutes;
+
   @override
   String toString() {
     return 'Session(id: $id, title: $title, startsAt: $startsAt, endsAt: $endsAt, description: $description, isServiceSession: $isServiceSession, isPlenumSession: $isPlenumSession, roomId: $roomId, room: $room, speakerIds: $speakerIds, categoryIds: $categoryIds)';
