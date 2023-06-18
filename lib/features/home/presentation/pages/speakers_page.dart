@@ -72,17 +72,16 @@ class _SpeakersListItem extends StatelessWidget {
               border: Border.all(color: Theme.of(context).colorScheme.primary),
             ),
             // On background image error, use the first character of the speakers' name
-            child: speaker.profilePictureUrl.isEmpty
-                ? CircleAvatar(
-                    radius: 24,
-                    child: Text(
-                      speaker.fullName[0],
-                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+            child: CircleAvatar(
+              radius: 24,
+              foregroundImage: NetworkImage(speaker.profilePictureUrl),
+              child: Text(
+                speaker.fullName[0],
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                  )
-                : CircleAvatar(radius: 24, backgroundImage: NetworkImage(speaker.profilePictureUrl)),
+              ),
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
