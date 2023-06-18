@@ -74,7 +74,7 @@ class SessionModel {
 
   List<String> get categoryIds => (_categoryIds ?? const []).map((categoryId) => categoryId?.toString() ?? '').toList();
 
-  int get roomId => _roomId ?? -1;
+  String get roomId => (_roomId ?? -1).toString();
 
   String get room => _room ?? '';
 }
