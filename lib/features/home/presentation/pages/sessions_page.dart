@@ -275,7 +275,7 @@ class _SessionFormat extends StatelessWidget {
       ),
       child: Text(
         sessionFormat.name,
-        style: Theme.of(context).textTheme.bodySmall,
+        style: Theme.of(context).textTheme.labelSmall,
       ),
     );
   }
