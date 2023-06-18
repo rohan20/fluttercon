@@ -28,7 +28,6 @@ class _HomePageContent extends StatelessWidget {
         title: SvgPicture.asset(
           'assets/images/fluttercon.svg',
           width: min(MediaQuery.of(context).size.width * 0.4, 150),
-
         ),
       ),
       body: const Center(
@@ -71,17 +70,21 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        unselectedFontSize: 14,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.tv),
+            icon: Icon(Icons.play_circle_outline),
+            activeIcon: Icon(Icons.play_circle),
             label: 'Sessions',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
             label: 'Speakers',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite_outline_rounded),
+            activeIcon: Icon(Icons.favorite_rounded),
             label: 'Favourites',
           ),
         ],
