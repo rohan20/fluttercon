@@ -155,7 +155,7 @@ class _SessionsList extends StatelessWidget {
             return isCategoryTypeSessionFormat && session.categoryIds.contains(category.id);
           }),
           showStartTime: !startsAtSameTimeAsPreviousSession,
-          backgroundColor: index.isEven ? Colors.white : Colors.grey.shade50,
+          backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
         );
       },
     );
