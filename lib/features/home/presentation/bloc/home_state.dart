@@ -8,6 +8,7 @@ class HomeState {
     this.sessions = const [],
     this.speakers = const [],
     this.categories = const [],
+    this.rooms = const [],
   });
 
   final bool isLoading;
@@ -15,6 +16,7 @@ class HomeState {
   final List<Session> sessions;
   final List<Speaker> speakers;
   final List<Category> categories;
+  final List<Room> rooms;
 
   HomeState copyWith({
     bool? isLoading,
@@ -22,6 +24,7 @@ class HomeState {
     List<Session>? sessions,
     List<Speaker>? speakers,
     List<Category>? categories,
+    List<Room>? rooms,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
@@ -29,6 +32,7 @@ class HomeState {
       sessions: sessions ?? this.sessions,
       speakers: speakers ?? this.speakers,
       categories: categories ?? this.categories,
+      rooms: rooms ?? this.rooms,
     );
   }
 

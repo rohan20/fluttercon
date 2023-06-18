@@ -28,6 +28,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           sessions: conferenceData.sessions,
           speakers: conferenceData.speakers,
           categories: conferenceData.categories,
+          rooms: conferenceData.rooms,
         ),
       );
     }
