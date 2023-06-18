@@ -10,7 +10,10 @@ class FlutterconApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          // Color picked from the 'con' part of 'Fluttercon' logo on https://fluttercon.dev
+          seedColor: const Color.fromRGBO(1, 53, 255, 1),
+        ),
         useMaterial3: true,
         textTheme: GoogleFonts.capriolaTextTheme(),
       ),
