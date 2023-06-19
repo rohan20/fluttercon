@@ -34,7 +34,7 @@ class SessionDetailsPage extends StatelessWidget {
             children: [
               Align(child: _SessionTitle(session.title)),
               const SizedBox(height: 16),
-              _SessionDateTime(session: session),
+              _SessionDateTime(session.startsAt),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -90,11 +90,9 @@ class _SessionTitle extends StatelessWidget {
 }
 
 class _SessionDateTime extends StatelessWidget {
-  const _SessionDateTime({
-    required this.session,
-  });
+  const _SessionDateTime(this.startsAt);
 
-  final Session session;
+  final DateTime startsAt;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +102,7 @@ class _SessionDateTime extends StatelessWidget {
         Icon(Icons.access_time, size: 16, color: Colors.black87.withOpacity(0.8)),
         const SizedBox(width: 4),
         Text(
-          '${DateFormat('EEE, dd MMM').format(session.startsAt)} at ${DateFormat('HH:mm').format(session.startsAt)}',
+          '${DateFormat('EEE, dd MMM').format(startsAt)} at ${DateFormat('HH:mm').format(startsAt)}',
           style: Theme.of(context).textTheme.labelLarge,
         ),
       ],
