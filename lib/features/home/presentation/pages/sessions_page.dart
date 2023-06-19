@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
+import 'package:fluttercon/features/session_details/presentation/pages/session_details_page.dart';
 import 'package:intl/intl.dart';
 
 class SessionsPage extends StatelessWidget {
@@ -154,17 +155,35 @@ class _SessionsList extends StatelessWidget {
 
         final startsAtSameTimeAsPreviousSession = index > 0 && sessions[index - 1].startsAt == session.startsAt;
 
-        return _SessionsListItem(
-          session: session,
-          speakers: speakers.where((speaker) => session.speakerIds.contains(speaker.id)).toList(),
-          sessionFormat: categories.firstWhere((category) {
-            final isCategoryTypeSessionFormat = category.typeId == '48321';
+        final sessionSpeakers = speakers.where((speaker) => session.speakerIds.contains(speaker.id)).toList();
+        final sessionCategories = categories.where((category) => session.categoryIds.contains(category.id)).toList();
+        final sessionRoomName = rooms.firstWhere((room) => room.id == session.roomId).name;
 
-            return isCategoryTypeSessionFormat && session.categoryIds.contains(category.id);
-          }),
-          roomName: rooms.firstWhere((room) => room.id == session.roomId).name,
-          showStartTime: !startsAtSameTimeAsPreviousSession,
-          backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
+        return GestureDetector(
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute<Widget>(
+              builder: (_) {
+                return SessionDetailsPage(
+                  session: session,
+                  speakers: sessionSpeakers,
+                  categories: sessionCategories,
+                  roomName: sessionRoomName,
+                );
+              },
+            ),
+          ),
+          child: _SessionsListItem(
+            session: session,
+            speakers: sessionSpeakers,
+            sessionFormat: sessionCategories.firstWhere((category) {
+              final isCategoryTypeSessionFormat = category.typeId == '48321';
+
+              return isCategoryTypeSessionFormat && session.categoryIds.contains(category.id);
+            }),
+            roomName: sessionRoomName,
+            showStartTime: !startsAtSameTimeAsPreviousSession,
+            backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
+          ),
         );
       },
     );
