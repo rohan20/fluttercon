@@ -25,3 +25,11 @@
 - [ ] ✅ Build configuration change
 - [ ] 📝 Documentation
 - [ ] 🗑️ Chore
+
+## Design Changes
+
+<!--- Screenshots, GIFs, videos, if any  -->
+
+|Before|After|
+|:-:|:-:|
+|PASTE_BEFORE_HERE|PASTE_AFTER_HERE|
