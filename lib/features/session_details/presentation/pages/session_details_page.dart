@@ -24,10 +24,15 @@ class SessionDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sessionFormatCategory = session.getSessionFormatCategory(
+      categories: categories,
+      sessionCategoryIds: session.categoryIds,
+    );
+
     return Scaffold(
       appBar: const ConferenceAppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,12 +44,7 @@ class SessionDetailsPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SessionFormat(
-                    sessionFormat: session.getSessionFormatCategory(
-                      categories: categories,
-                      sessionCategoryIds: session.categoryIds,
-                    ),
-                  ),
+                  SessionFormat(sessionFormat: sessionFormatCategory),
                   const SizedBox(width: 8),
                   SessionRoom(roomName: roomName),
                   const SizedBox(width: 8),
@@ -60,16 +60,53 @@ class SessionDetailsPage extends StatelessWidget {
               },
               const SizedBox(height: 16),
               Text('Description:', style: Theme.of(context).textTheme.bodyMedium),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               Text(
                 session.description,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
               ),
-              // TODO: Display all categories
+              const SizedBox(height: 16),
+              Text('Categories:', style: Theme.of(context).textTheme.bodyMedium),
+              const SizedBox(height: 12),
+              _SessionCategories(
+                categories: List.from(categories)..removeWhere((category) => category.id == sessionFormatCategory.id),
+              ),
+              const SizedBox(height: 16),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SessionCategories extends StatelessWidget {
+  const _SessionCategories({
+    required this.categories,
+  });
+
+  final List<Category> categories;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 4,
+      runSpacing: 8,
+      children: categories.map(
+        (category) {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: Colors.deepPurple.shade50,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              category.name,
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          );
+        },
+      ).toList(),
     );
   }
 }
