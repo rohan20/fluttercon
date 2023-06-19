@@ -1,6 +1,7 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttercon/common/extensions/session_extensions.dart';
 import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
@@ -178,11 +179,10 @@ class _SessionsList extends StatelessWidget {
           child: _SessionsListItem(
             session: session,
             speakers: sessionSpeakers,
-            sessionFormat: sessionCategories.firstWhere((category) {
-              final isCategoryTypeSessionFormat = category.typeId == '48321';
-
-              return isCategoryTypeSessionFormat && session.categoryIds.contains(category.id);
-            }),
+            sessionFormat: session.getSessionFormatCategory(
+              categories: categories,
+              sessionCategoryIds: session.categoryIds,
+            ),
             roomName: sessionRoomName,
             showStartTime: !startsAtSameTimeAsPreviousSession,
             backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
