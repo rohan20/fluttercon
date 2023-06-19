@@ -254,7 +254,7 @@ class _SessionsListItem extends StatelessWidget {
                       children: [
                         SessionFormat(sessionFormat: sessionFormat),
                         const SizedBox(width: 4),
-                        SessionDuration(session: session),
+                        SessionDuration(durationInMinutes: session.duration),
                       ],
                     ),
                   ],

@@ -1,24 +1,23 @@
-import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 
 class SessionDuration extends StatelessWidget {
   const SessionDuration({
-    required this.session,
+    required this.durationInMinutes,
     super.key,
   });
 
-  final Session session;
+  final int durationInMinutes;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-        color: session.duration.backgroundColor,
+        color: durationInMinutes.backgroundColor,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        '${session.duration}m',
+        '${durationInMinutes}m',
         style: Theme.of(context).textTheme.labelSmall,
       ),
     );
