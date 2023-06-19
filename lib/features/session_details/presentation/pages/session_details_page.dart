@@ -34,7 +34,7 @@ class SessionDetailsPage extends StatelessWidget {
             children: [
               Align(child: _SessionTitle(session.title)),
               const SizedBox(height: 16),
-              _SessionDateTime(session.startsAt),
+              Align(child: _SessionDateTime(session.startsAt)),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -96,16 +96,27 @@ class _SessionDateTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.access_time, size: 16, color: Colors.black87.withOpacity(0.8)),
-        const SizedBox(width: 4),
-        Text(
-          '${DateFormat('EEE, dd MMM').format(startsAt)} at ${DateFormat('HH:mm').format(startsAt)}',
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
-      ],
+    return Text.rich(
+      TextSpan(
+        children: [
+          WidgetSpan(
+            child: Icon(Icons.access_time, size: 16, color: Colors.black87.withOpacity(0.8)),
+          ),
+          const WidgetSpan(child: SizedBox(width: 4)),
+          TextSpan(
+            text: DateFormat('EEE, dd MMM').format(startsAt),
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          TextSpan(
+            text: ' at ',
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
+          ),
+          TextSpan(
+            text: DateFormat('HH:mm').format(startsAt),
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        ],
+      ),
     );
   }
 }
