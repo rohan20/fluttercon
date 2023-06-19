@@ -26,6 +26,7 @@ class SessionDetailsPage extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 session.title,
@@ -44,10 +45,12 @@ class SessionDetailsPage extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                 ),
               },
+              const SizedBox(height: 12),
+              Text('Description:', style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 8),
               Text(
                 session.description,
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
               ),
             ],
           ),
