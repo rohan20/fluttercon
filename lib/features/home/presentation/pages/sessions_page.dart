@@ -179,10 +179,7 @@ class _SessionsList extends StatelessWidget {
           child: _SessionsListItem(
             session: session,
             speakers: sessionSpeakers,
-            sessionFormat: session.getSessionFormatCategory(
-              categories: categories,
-              sessionCategoryIds: session.categoryIds,
-            ),
+            sessionFormat: session.getSessionFormatCategory(categories: categories),
             roomName: sessionRoomName,
             showStartTime: !startsAtSameTimeAsPreviousSession,
             backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,

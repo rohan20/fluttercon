@@ -24,10 +24,7 @@ class SessionDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sessionFormatCategory = session.getSessionFormatCategory(
-      categories: categories,
-      sessionCategoryIds: session.categoryIds,
-    );
+    final sessionFormatCategory = session.getSessionFormatCategory(categories: categories);
 
     return Scaffold(
       appBar: const ConferenceAppBar(),
