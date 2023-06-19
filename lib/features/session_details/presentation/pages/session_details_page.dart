@@ -32,14 +32,10 @@ class SessionDetailsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                session.title,
-                style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
-              ),
+              Align(child: _SessionTitle(session.title)),
               const SizedBox(height: 16),
               _SessionDateTime(session: session),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -74,6 +70,21 @@ class SessionDetailsPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SessionTitle extends StatelessWidget {
+  const _SessionTitle(this.title);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.titleLarge,
+      textAlign: TextAlign.center,
     );
   }
 }
