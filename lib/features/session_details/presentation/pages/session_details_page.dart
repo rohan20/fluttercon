@@ -1,6 +1,9 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercon/common/extensions/session_extensions.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
+import 'package:fluttercon/common/widgets/session/session_duration.dart';
+import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
 import 'package:fluttercon/common/widgets/speaker/speaker_list_item.dart';
 
@@ -31,21 +34,32 @@ class SessionDetailsPage extends StatelessWidget {
               Text(
                 session.title,
                 style: Theme.of(context).textTheme.titleLarge,
+                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SessionFormat(
+                    sessionFormat: session.getSessionFormatCategory(
+                      categories: categories,
+                      sessionCategoryIds: session.categoryIds,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
                   SessionRoom(roomName: roomName),
+                  const SizedBox(width: 8),
+                  SessionDuration(durationInMinutes: session.duration),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               for (final speaker in speakers) ...{
                 SpeakersListItem(
                   speaker: speaker,
                   backgroundColor: Colors.transparent,
                 ),
               },
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Text('Description:', style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 8),
               Text(
