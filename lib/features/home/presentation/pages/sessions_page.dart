@@ -1,6 +1,7 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
 import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
@@ -250,7 +251,7 @@ class _SessionsListItem extends StatelessWidget {
                     const SizedBox(width: 4),
                     Row(
                       children: [
-                        _SessionFormat(sessionFormat: sessionFormat),
+                        SessionFormat(sessionFormat: sessionFormat),
                         const SizedBox(width: 4),
                         _SessionDuration(session: session),
                       ],
@@ -290,33 +291,6 @@ class _SessionDuration extends StatelessWidget {
   }
 }
 
-class _SessionFormat extends StatelessWidget {
-  const _SessionFormat({
-    required this.sessionFormat,
-  });
-
-  final Category sessionFormat;
-
-  @override
-  Widget build(BuildContext context) {
-    if (sessionFormat.id == ConferenceMetadata.sessionId) {
-      return const SizedBox();
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: sessionFormat.id.backgroundColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        sessionFormat.name,
-        style: Theme.of(context).textTheme.labelSmall,
-      ),
-    );
-  }
-}
-
 extension DurationExt on int {
   Color get backgroundColor {
     switch (this) {
@@ -326,21 +300,6 @@ extension DurationExt on int {
         return Colors.orange.shade50;
       default:
         return Colors.green.shade50;
-    }
-  }
-}
-
-extension CategoryExt on String {
-  Color get backgroundColor {
-    switch (this) {
-      case ConferenceMetadata.lightningTalkId:
-        return Colors.blue.shade50;
-      case ConferenceMetadata.sessionId:
-        return Colors.orange.shade50;
-      case ConferenceMetadata.workshopId || ConferenceMetadata.keynoteId || ConferenceMetadata.panelDiscussionId:
-        return Colors.green.shade50;
-      default:
-        return Colors.grey.shade200;
     }
   }
 }
