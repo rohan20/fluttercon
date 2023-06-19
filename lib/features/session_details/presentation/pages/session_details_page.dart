@@ -6,6 +6,7 @@ import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
 import 'package:fluttercon/common/widgets/speaker/speaker_list_item.dart';
+import 'package:intl/intl.dart';
 
 class SessionDetailsPage extends StatelessWidget {
   const SessionDetailsPage({
@@ -37,6 +38,8 @@ class SessionDetailsPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
+              _SessionDateTime(session: session),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -66,10 +69,34 @@ class SessionDetailsPage extends StatelessWidget {
                 session.description,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
               ),
+              // TODO: Display all categories
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SessionDateTime extends StatelessWidget {
+  const _SessionDateTime({
+    required this.session,
+  });
+
+  final Session session;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.access_time, size: 16, color: Colors.black87.withOpacity(0.8)),
+        const SizedBox(width: 4),
+        Text(
+          '${DateFormat('EEE, dd MMM').format(session.startsAt)} at ${DateFormat('HH:mm').format(session.startsAt)}',
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
+      ],
     );
   }
 }
