@@ -32,11 +32,12 @@ class SessionDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: const ConferenceAppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 16),
               Align(child: _SessionTitle(session.title)),
               const SizedBox(height: 16),
               Align(child: _SessionDateTime(session.startsAt)),
@@ -71,7 +72,7 @@ class SessionDetailsPage extends StatelessWidget {
               _SessionCategories(
                 categories: List.from(categories)..removeWhere((category) => category.id == sessionFormatCategory.id),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
             ],
           ),
         ),
