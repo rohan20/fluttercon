@@ -1,6 +1,7 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttercon/common/widgets/session/session_room.dart';
 import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 import 'package:fluttercon/features/session_details/presentation/pages/session_details_page.dart';
@@ -245,7 +246,7 @@ class _SessionsListItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _SessionRoom(roomName: roomName),
+                    SessionRoom(roomName: roomName),
                     const SizedBox(width: 4),
                     Row(
                       children: [
@@ -311,36 +312,6 @@ class _SessionFormat extends StatelessWidget {
       child: Text(
         sessionFormat.name,
         style: Theme.of(context).textTheme.labelSmall,
-      ),
-    );
-  }
-}
-
-class _SessionRoom extends StatelessWidget {
-  const _SessionRoom({
-    required this.roomName,
-  });
-
-  final String roomName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade800, width: 0.1),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.location_on, size: 16, color: Colors.grey.shade400),
-          const SizedBox(width: 4),
-          Text(
-            roomName,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
       ),
     );
   }
