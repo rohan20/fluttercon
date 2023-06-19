@@ -1,6 +1,7 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
+import 'package:fluttercon/common/widgets/session/session_room.dart';
 import 'package:fluttercon/common/widgets/speaker/speaker_list_item.dart';
 
 class SessionDetailsPage extends StatelessWidget {
@@ -30,7 +31,13 @@ class SessionDetailsPage extends StatelessWidget {
                 session.title,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  SessionRoom(roomName: roomName),
+                ],
+              ),
+              const SizedBox(height: 12),
               for (final speaker in speakers) ...{
                 SpeakersListItem(
                   speaker: speaker,
