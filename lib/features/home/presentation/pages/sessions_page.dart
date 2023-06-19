@@ -1,8 +1,13 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttercon/common/extensions/session_extensions.dart';
+import 'package:fluttercon/common/widgets/session/session_duration.dart';
+import 'package:fluttercon/common/widgets/session/session_format.dart';
+import 'package:fluttercon/common/widgets/session/session_room.dart';
 import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
+import 'package:fluttercon/features/session_details/presentation/pages/session_details_page.dart';
 import 'package:intl/intl.dart';
 
 class SessionsPage extends StatelessWidget {
@@ -154,17 +159,34 @@ class _SessionsList extends StatelessWidget {
 
         final startsAtSameTimeAsPreviousSession = index > 0 && sessions[index - 1].startsAt == session.startsAt;
 
-        return _SessionsListItem(
-          session: session,
-          speakers: speakers.where((speaker) => session.speakerIds.contains(speaker.id)).toList(),
-          sessionFormat: categories.firstWhere((category) {
-            final isCategoryTypeSessionFormat = category.typeId == '48321';
+        final sessionSpeakers = speakers.where((speaker) => session.speakerIds.contains(speaker.id)).toList();
+        final sessionCategories = categories.where((category) => session.categoryIds.contains(category.id)).toList();
+        final sessionRoomName = rooms.firstWhere((room) => room.id == session.roomId).name;
 
-            return isCategoryTypeSessionFormat && session.categoryIds.contains(category.id);
-          }),
-          roomName: rooms.firstWhere((room) => room.id == session.roomId).name,
-          showStartTime: !startsAtSameTimeAsPreviousSession,
-          backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
+        return GestureDetector(
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute<Widget>(
+              builder: (_) {
+                return SessionDetailsPage(
+                  session: session,
+                  speakers: sessionSpeakers,
+                  categories: sessionCategories,
+                  roomName: sessionRoomName,
+                );
+              },
+            ),
+          ),
+          child: _SessionsListItem(
+            session: session,
+            speakers: sessionSpeakers,
+            sessionFormat: session.getSessionFormatCategory(
+              categories: categories,
+              sessionCategoryIds: session.categoryIds,
+            ),
+            roomName: sessionRoomName,
+            showStartTime: !startsAtSameTimeAsPreviousSession,
+            backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
+          ),
         );
       },
     );
@@ -226,13 +248,13 @@ class _SessionsListItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _SessionRoom(roomName: roomName),
+                    SessionRoom(roomName: roomName),
                     const SizedBox(width: 4),
                     Row(
                       children: [
-                        _SessionFormat(sessionFormat: sessionFormat),
+                        SessionFormat(sessionFormat: sessionFormat, hideIfSessionFormatIsSession: true),
                         const SizedBox(width: 4),
-                        _SessionDuration(session: session),
+                        SessionDuration(durationInMinutes: session.duration),
                       ],
                     ),
                   ],
@@ -244,113 +266,5 @@ class _SessionsListItem extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class _SessionDuration extends StatelessWidget {
-  const _SessionDuration({
-    required this.session,
-  });
-
-  final Session session;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: session.duration.backgroundColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        '${session.duration}m',
-        style: Theme.of(context).textTheme.labelSmall,
-      ),
-    );
-  }
-}
-
-class _SessionFormat extends StatelessWidget {
-  const _SessionFormat({
-    required this.sessionFormat,
-  });
-
-  final Category sessionFormat;
-
-  @override
-  Widget build(BuildContext context) {
-    if (sessionFormat.id == ConferenceMetadata.sessionId) {
-      return const SizedBox();
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: sessionFormat.id.backgroundColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        sessionFormat.name,
-        style: Theme.of(context).textTheme.labelSmall,
-      ),
-    );
-  }
-}
-
-class _SessionRoom extends StatelessWidget {
-  const _SessionRoom({
-    required this.roomName,
-  });
-
-  final String roomName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade800, width: 0.1),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.location_on, size: 16, color: Colors.grey.shade400),
-          const SizedBox(width: 4),
-          Text(
-            roomName,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-extension DurationExt on int {
-  Color get backgroundColor {
-    switch (this) {
-      case 20:
-        return Colors.blue.shade50;
-      case 40:
-        return Colors.orange.shade50;
-      default:
-        return Colors.green.shade50;
-    }
-  }
-}
-
-extension CategoryExt on String {
-  Color get backgroundColor {
-    switch (this) {
-      case ConferenceMetadata.lightningTalkId:
-        return Colors.blue.shade50;
-      case ConferenceMetadata.sessionId:
-        return Colors.orange.shade50;
-      case ConferenceMetadata.workshopId || ConferenceMetadata.keynoteId || ConferenceMetadata.panelDiscussionId:
-        return Colors.green.shade50;
-      default:
-        return Colors.grey.shade200;
-    }
   }
 }

@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttercon/common/widgets/conference_app_bar.dart';
 import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/pages/sessions_page.dart';
 import 'package:fluttercon/features/home/presentation/pages/speakers_page.dart';
@@ -24,14 +22,9 @@ class _HomePageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: SvgPicture.asset(
-          'assets/images/fluttercon.svg',
-          width: min(MediaQuery.of(context).size.width * 0.4, 150),
-        ),
-      ),
-      body: const Center(
+    return const Scaffold(
+      appBar: ConferenceAppBar(),
+      body: Center(
         child: _BottomNavigationBar(),
       ),
     );
