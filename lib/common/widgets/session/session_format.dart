@@ -5,14 +5,16 @@ import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 class SessionFormat extends StatelessWidget {
   const SessionFormat({
     required this.sessionFormat,
+    this.hideIfSessionFormatIsSession = false,
     super.key,
   });
 
   final Category sessionFormat;
+  final bool hideIfSessionFormatIsSession;
 
   @override
   Widget build(BuildContext context) {
-    if (sessionFormat.id == ConferenceMetadata.sessionId) {
+    if (sessionFormat.id == ConferenceMetadata.sessionId && hideIfSessionFormatIsSession) {
       return const SizedBox();
     }
 
