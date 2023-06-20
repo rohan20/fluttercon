@@ -27,12 +27,12 @@ class SpeakerDetailsPage extends StatelessWidget {
                 allowTap: false,
                 padding: EdgeInsets.zero,
               ),
-              if (speaker.bio.isNotEmpty) ...{
+              if (speaker.bio.trim().isNotEmpty) ...{
                 const SizedBox(height: 16),
                 Text('Bio:', style: Theme.of(context).textTheme.bodyMedium),
                 const SizedBox(height: 12),
                 Text(
-                  speaker.bio,
+                  speaker.bio.trim(),
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
                 ),
               },
