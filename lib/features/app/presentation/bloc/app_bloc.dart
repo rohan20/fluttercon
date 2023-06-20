@@ -8,10 +8,10 @@ import 'package:fluttercon/features/app/presentation/bloc/app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(const AppState()) {
-    on<AppLaunchedEvent>(_onHomePageCreatedEvent);
+    on<AppLaunchedEvent>(_onAppLaunchedEvent);
   }
 
-  FutureOr<void> _onHomePageCreatedEvent(event, Emitter<AppState> emit) async {
+  FutureOr<void> _onAppLaunchedEvent(event, Emitter<AppState> emit) async {
     emit(state.copyWith(isLoading: true));
 
     final conferenceDataResult = await injector.get<GetConferenceDataUseCase>().call();
