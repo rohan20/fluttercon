@@ -9,6 +9,7 @@ class ConferenceAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       title: SvgPicture.asset(
         'assets/images/fluttercon.svg',
         width: min(MediaQuery.of(context).size.width * 0.4, 150),
