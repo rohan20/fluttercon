@@ -91,12 +91,12 @@ class _SessionsListItemContent extends StatelessWidget {
                 child: Center(
                   child: Text(
                     DateFormat('HH:mm').format(session.startsAt),
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 4),
           },
           Expanded(
             flex: 5,
@@ -104,7 +104,7 @@ class _SessionsListItemContent extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.shade900, width: 0.1),
+                border: Border.all(color: Colors.grey.shade900, width: 0.2),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
