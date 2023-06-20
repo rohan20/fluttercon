@@ -9,6 +9,7 @@ class AppState {
     this.speakers = const [],
     this.categories = const [],
     this.rooms = const [],
+    this.favouriteSessionIds = const {},
   });
 
   final bool isLoading;
@@ -17,6 +18,7 @@ class AppState {
   final List<Speaker> speakers;
   final List<Category> categories;
   final List<Room> rooms;
+  final Set<String> favouriteSessionIds;
 
   AppState copyWith({
     bool? isLoading,
@@ -25,6 +27,7 @@ class AppState {
     List<Speaker>? speakers,
     List<Category>? categories,
     List<Room>? rooms,
+    Set<String>? favouriteSessionIds,
   }) {
     return AppState(
       isLoading: isLoading ?? this.isLoading,
@@ -33,6 +36,7 @@ class AppState {
       speakers: speakers ?? this.speakers,
       categories: categories ?? this.categories,
       rooms: rooms ?? this.rooms,
+      favouriteSessionIds: favouriteSessionIds ?? this.favouriteSessionIds,
     );
   }
 
@@ -49,6 +53,8 @@ class AppState {
   List<Session> get day2SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day2);
 
   List<Session> get day3SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day3);
+
+  bool isFavouriteSession({required String id}) => favouriteSessionIds.contains(id);
 }
 
 extension DateTimeExt on DateTime {

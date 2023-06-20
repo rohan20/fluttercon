@@ -9,6 +9,7 @@ import 'package:fluttercon/features/app/presentation/bloc/app_state.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(const AppState()) {
     on<AppLaunchedEvent>(_onAppLaunchedEvent);
+    on<SessionFavouriteIconTappedEvent>(_onSessionFavouriteIconTappedEvent);
   }
 
   FutureOr<void> _onAppLaunchedEvent(event, Emitter<AppState> emit) async {
@@ -31,6 +32,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           rooms: conferenceData.rooms,
         ),
       );
+    }
+  }
+
+  FutureOr<void> _onSessionFavouriteIconTappedEvent(
+    SessionFavouriteIconTappedEvent event,
+    Emitter<AppState> emit,
+  ) {
+    if (state.isFavouriteSession(id: event.sessionId)) {
+      emit(state.copyWith(favouriteSessionIds: Set.of(state.favouriteSessionIds)..remove(event.sessionId)));
+    } else {
+      emit(state.copyWith(favouriteSessionIds: Set.of(state.favouriteSessionIds)..add(event.sessionId)));
     }
   }
 }
