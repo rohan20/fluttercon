@@ -157,8 +157,11 @@ class _SessionsList extends StatelessWidget {
 
         return SessionsListItem(
           session: session,
-          startsAtSameTimeAsPreviousSession: startsAtSameTimeAsPreviousSession,
+          sessionTimeVisibility: startsAtSameTimeAsPreviousSession //
+              ? SessionTimeVisibility.invisible
+              : SessionTimeVisibility.visible,
           backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
+          hideSessionFormatIfItIsSession: true,
         );
       },
     );

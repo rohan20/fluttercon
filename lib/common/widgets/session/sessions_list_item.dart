@@ -12,14 +12,18 @@ import 'package:intl/intl.dart';
 class SessionsListItem extends StatelessWidget {
   const SessionsListItem({
     required this.session,
-    this.startsAtSameTimeAsPreviousSession = false,
     this.backgroundColor = Colors.transparent,
+    this.padding,
+    this.sessionTimeVisibility = SessionTimeVisibility.visible,
+    this.hideSessionFormatIfItIsSession,
     super.key,
   });
 
   final Session session;
-  final bool startsAtSameTimeAsPreviousSession;
   final Color backgroundColor;
+  final EdgeInsets? padding;
+  final SessionTimeVisibility sessionTimeVisibility;
+  final bool? hideSessionFormatIfItIsSession;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +42,10 @@ class SessionsListItem extends StatelessWidget {
               categories: session.getSessionCategories(categories: state.categories),
             ),
             roomName: session.getSessionRoom(rooms: state.rooms).name,
-            showStartTime: !startsAtSameTimeAsPreviousSession,
+            sessionTimeVisibility: sessionTimeVisibility,
             backgroundColor: backgroundColor,
+            padding: padding,
+            hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession,
           );
         },
       ),
@@ -53,44 +59,52 @@ class _SessionsListItemContent extends StatelessWidget {
     required this.speakers,
     required this.sessionFormat,
     required this.roomName,
-    required this.showStartTime,
     required this.backgroundColor,
+    required this.sessionTimeVisibility,
+    this.padding,
+    this.hideSessionFormatIfItIsSession,
   });
 
   final Session session;
   final List<Speaker> speakers;
   final Category sessionFormat;
   final String roomName;
-  final bool showStartTime;
   final Color backgroundColor;
+  final SessionTimeVisibility sessionTimeVisibility;
+  final EdgeInsets? padding;
+  final bool? hideSessionFormatIfItIsSession;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+      padding: padding ?? const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
       color: backgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Opacity(
-              opacity: showStartTime ? 1 : 0,
-              child: Center(
-                child: Text(
-                  DateFormat('HH:mm').format(session.startsAt),
-                  style: Theme.of(context).textTheme.titleSmall,
+          if (sessionTimeVisibility == SessionTimeVisibility.gone) ...{
+            const SizedBox(),
+          } else ...{
+            Expanded(
+              child: Opacity(
+                opacity: sessionTimeVisibility == SessionTimeVisibility.visible ? 1 : 0,
+                child: Center(
+                  child: Text(
+                    DateFormat('HH:mm').format(session.startsAt),
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 8),
+            const SizedBox(width: 8),
+          },
           Expanded(
             flex: 5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  session.title,
+                  session.title.trim(),
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 8),
@@ -106,7 +120,10 @@ class _SessionsListItemContent extends StatelessWidget {
                     const SizedBox(width: 4),
                     Row(
                       children: [
-                        SessionFormat(sessionFormat: sessionFormat, hideIfSessionFormatIsSession: true),
+                        SessionFormat(
+                          sessionFormat: sessionFormat,
+                          hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession ?? false,
+                        ),
                         const SizedBox(width: 4),
                         SessionDuration(durationInMinutes: session.duration),
                       ],
@@ -121,4 +138,10 @@ class _SessionsListItemContent extends StatelessWidget {
       ),
     );
   }
+}
+
+enum SessionTimeVisibility {
+  visible,
+  invisible,
+  gone, // won't even occupy space
 }
