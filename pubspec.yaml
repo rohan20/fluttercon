@@ -23,6 +23,7 @@ dependencies:
   get_it: ^7.6.0
   google_fonts: ^4.0.4
   intl: ^0.18.1
+  shared_preferences: ^2.1.2
   url_launcher: ^6.1.11
 
 dev_dependencies:
