@@ -15,6 +15,7 @@ class SessionDuration extends StatelessWidget {
       decoration: BoxDecoration(
         color: durationInMinutes.backgroundColor,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: durationInMinutes.borderColor, width: 0.5),
       ),
       child: Text(
         '${durationInMinutes}m',
@@ -33,6 +34,17 @@ extension DurationExt on int {
         return Colors.orange.shade50;
       default:
         return Colors.green.shade50;
+    }
+  }
+
+  Color get borderColor {
+    switch (this) {
+      case 20:
+        return Colors.blue.shade500;
+      case 40:
+        return Colors.orange.shade500;
+      default:
+        return Colors.green.shade500;
     }
   }
 }

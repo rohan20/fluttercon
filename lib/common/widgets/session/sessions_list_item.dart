@@ -91,47 +91,54 @@ class _SessionsListItemContent extends StatelessWidget {
                 child: Center(
                   child: Text(
                     DateFormat('HH:mm').format(session.startsAt),
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 4),
           },
           Expanded(
             flex: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  session.title.trim(),
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  speakers.map((speaker) => speaker.fullName).join(', '),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Material(
+              elevation: 4,
+              borderRadius: BorderRadius.circular(8),
+              shadowColor: sessionFormat.id.sessionFormatBorderColor.withOpacity(0.6),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SessionRoom(roomName: roomName),
-                    const SizedBox(width: 4),
+                    Text(
+                      session.title.trim(),
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      speakers.map((speaker) => speaker.fullName).join(', '),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 8),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SessionFormat(
-                          sessionFormat: sessionFormat,
-                          hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession ?? false,
-                        ),
+                        SessionRoom(roomName: roomName),
                         const SizedBox(width: 4),
-                        SessionDuration(durationInMinutes: session.duration),
+                        Row(
+                          children: [
+                            SessionFormat(
+                              sessionFormat: sessionFormat,
+                              hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession ?? false,
+                            ),
+                            const SizedBox(width: 4),
+                            SessionDuration(durationInMinutes: session.duration),
+                          ],
+                        ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-              ],
+              ),
             ),
           ),
         ],

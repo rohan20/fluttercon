@@ -15,7 +15,7 @@ class SessionRoom extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade800, width: 0.1),
+        border: Border.all(color: Colors.grey.shade800, width: 0.2),
       ),
       child: Row(
         children: [
