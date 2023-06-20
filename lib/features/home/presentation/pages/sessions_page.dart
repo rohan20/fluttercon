@@ -2,6 +2,7 @@ import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/extensions/session_extensions.dart';
+import 'package:fluttercon/common/extensions/speaker_extensions.dart';
 import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
@@ -159,7 +160,10 @@ class _SessionsList extends StatelessWidget {
 
         final startsAtSameTimeAsPreviousSession = index > 0 && sessions[index - 1].startsAt == session.startsAt;
 
-        final sessionSpeakers = speakers.where((speaker) => session.speakerIds.contains(speaker.id)).toList();
+        final sessionSpeakers = speakers
+            .where((speaker) => session.speakerIds.contains(speaker.id))
+            .map((speaker) => speaker.copyWith(sessions: speaker.getSpeakerSessions(sessions: sessions)))
+            .toList();
         final sessionCategories = categories.where((category) => session.categoryIds.contains(category.id)).toList();
         final sessionRoomName = rooms.firstWhere((room) => room.id == session.roomId).name;
 

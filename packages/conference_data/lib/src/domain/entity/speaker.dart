@@ -9,6 +9,7 @@ class Speaker {
     required this.tagLine,
     required this.profilePictureUrl,
     required this.sessionIds,
+    this.sessions,
     // TODO(rohan20): Add "links"
   });
 
@@ -29,6 +30,7 @@ class Speaker {
   final String tagLine;
   final String profilePictureUrl;
   final List<String> sessionIds;
+  final List<Session>? sessions;
 
   Speaker copyWith({List<Session>? sessions}) {
     return Speaker(
@@ -38,6 +40,7 @@ class Speaker {
       tagLine: tagLine,
       profilePictureUrl: profilePictureUrl,
       sessionIds: sessionIds,
+      sessions: sessions ?? this.sessions,
     );
   }
 
