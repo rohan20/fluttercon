@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/di/injector.dart';
-import 'package:fluttercon/features/home/presentation/bloc/home_event.dart';
-import 'package:fluttercon/features/home/presentation/bloc/home_state.dart';
+import 'package:fluttercon/features/app/presentation/bloc/app_event.dart';
+import 'package:fluttercon/features/app/presentation/bloc/app_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(const HomeState()) {
-    on<HomePageCreatedEvent>(_onHomePageCreatedEvent);
+class AppBloc extends Bloc<AppEvent, AppState> {
+  AppBloc() : super(const AppState()) {
+    on<AppLaunchedEvent>(_onHomePageCreatedEvent);
   }
 
-  FutureOr<void> _onHomePageCreatedEvent(event, Emitter<HomeState> emit) async {
+  FutureOr<void> _onHomePageCreatedEvent(event, Emitter<AppState> emit) async {
     emit(state.copyWith(isLoading: true));
 
     final conferenceDataResult = await injector.get<GetConferenceDataUseCase>().call();

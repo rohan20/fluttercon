@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/extensions/speaker_extensions.dart';
 import 'package:fluttercon/common/widgets/speaker/speakers_list_item.dart';
-import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
+import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 
 class SpeakersPage extends StatelessWidget {
   const SpeakersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
         if (state.isLoading) {
           return const Center(
