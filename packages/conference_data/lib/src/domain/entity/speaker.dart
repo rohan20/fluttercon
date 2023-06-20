@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:conference_data/conference_data.dart';
 import 'package:conference_data/src/data/model/speaker_model.dart';
-import 'package:conference_data/src/domain/entity/link.dart';
 
 class Speaker {
   Speaker({
