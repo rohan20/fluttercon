@@ -10,7 +10,6 @@ class Speaker {
     required this.profilePictureUrl,
     required this.sessionIds,
     this.links = const [],
-    this.sessions,
   });
 
   factory Speaker.fromSpeakerModel(SpeakerModel speakerModel) {
@@ -32,20 +31,6 @@ class Speaker {
   final String profilePictureUrl;
   final List<String> sessionIds;
   final List<Link> links;
-  final List<Session>? sessions;
-
-  Speaker copyWith({List<Session>? sessions}) {
-    return Speaker(
-      id: id,
-      fullName: fullName,
-      bio: bio,
-      tagLine: tagLine,
-      profilePictureUrl: profilePictureUrl,
-      sessionIds: sessionIds,
-      links: links,
-      sessions: sessions ?? this.sessions,
-    );
-  }
 
   @override
   String toString() {

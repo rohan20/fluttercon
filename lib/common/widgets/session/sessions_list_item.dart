@@ -1,27 +1,23 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/extensions/session_extensions.dart';
 import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
+import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/session_details/presentation/pages/session_details_page.dart';
 import 'package:intl/intl.dart';
 
 class SessionsListItem extends StatelessWidget {
   const SessionsListItem({
     required this.session,
-    required this.sessionSpeakers,
-    required this.sessionRoomName,
-    required this.categories,
     this.startsAtSameTimeAsPreviousSession = false,
     this.backgroundColor = Colors.transparent,
     super.key,
   });
 
   final Session session;
-  final List<Speaker> sessionSpeakers;
-  final String sessionRoomName;
-  final List<Category> categories;
   final bool startsAtSameTimeAsPreviousSession;
   final Color backgroundColor;
 
@@ -30,23 +26,22 @@ class SessionsListItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute<Widget>(
-          builder: (_) {
-            return SessionDetailsPage(
-              session: session,
-              speakers: sessionSpeakers,
-              categories: session.getSessionCategories(categories: categories),
-              roomName: sessionRoomName,
-            );
-          },
+          builder: (_) => SessionDetailsPage(session),
         ),
       ),
-      child: _SessionsListItemContent(
-        session: session,
-        speakers: sessionSpeakers,
-        sessionFormat: session.getSessionFormatCategory(categories: categories),
-        roomName: sessionRoomName,
-        showStartTime: !startsAtSameTimeAsPreviousSession,
-        backgroundColor: backgroundColor,
+      child: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          return _SessionsListItemContent(
+            session: session,
+            speakers: session.getSessionSpeakers(speakers: state.speakers),
+            sessionFormat: session.getSessionFormatCategory(
+              categories: session.getSessionCategories(categories: state.categories),
+            ),
+            roomName: session.getSessionRoom(rooms: state.rooms).name,
+            showStartTime: !startsAtSameTimeAsPreviousSession,
+            backgroundColor: backgroundColor,
+          );
+        },
       ),
     );
   }

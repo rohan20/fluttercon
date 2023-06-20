@@ -1,7 +1,6 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttercon/common/extensions/speaker_extensions.dart';
 import 'package:fluttercon/common/widgets/session/sessions_list_item.dart';
 import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
@@ -156,17 +155,8 @@ class _SessionsList extends StatelessWidget {
 
         final startsAtSameTimeAsPreviousSession = index > 0 && sessions[index - 1].startsAt == session.startsAt;
 
-        final sessionSpeakers = speakers
-            .where((speaker) => session.speakerIds.contains(speaker.id))
-            .map((speaker) => speaker.copyWith(sessions: speaker.getSpeakerSessions(sessions: sessions)))
-            .toList();
-        final sessionRoomName = rooms.firstWhere((room) => room.id == session.roomId).name;
-
         return SessionsListItem(
           session: session,
-          sessionSpeakers: sessionSpeakers,
-          sessionRoomName: sessionRoomName,
-          categories: categories,
           startsAtSameTimeAsPreviousSession: startsAtSameTimeAsPreviousSession,
           backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
         );

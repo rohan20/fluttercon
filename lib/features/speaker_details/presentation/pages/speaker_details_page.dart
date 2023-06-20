@@ -1,8 +1,10 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
 import 'package:fluttercon/common/widgets/speaker/speakers_list_item.dart';
+import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,14 +44,29 @@ class SpeakerDetailsPage extends StatelessWidget {
                 const SizedBox(height: 12),
                 _SpeakerLinks(links: speaker.links),
               },
-              if (speaker.sessions != null && speaker.sessions!.isNotEmpty) ...{
-                const SizedBox(height: 16),
-                Text('Sessions:', style: Theme.of(context).textTheme.bodyMedium),
-                const SizedBox(height: 12),
-                for (final session in speaker.sessions!) ...{
-                  Text(session.title), // TODO(rohan20): SessionListItem
+              Builder(
+                builder: (context) {
+                  final speakerSessions = context.watch<AppBloc>().state.sessions.where(
+                        (session) => session.speakerIds.any((speakerId) => speakerId == speaker.id),
+                      );
+
+                  if (speakerSessions.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      Text('Sessions:', style: Theme.of(context).textTheme.bodyMedium),
+                      const SizedBox(height: 12),
+                      for (final session in speakerSessions) ...{
+                        Text(session.title), // TODO(rohan20): SessionListItem
+                      },
+                    ],
+                  );
                 },
-              },
+              ),
               const SizedBox(height: 32),
             ],
           ),

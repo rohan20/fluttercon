@@ -1,7 +1,6 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttercon/common/extensions/speaker_extensions.dart';
 import 'package:fluttercon/common/widgets/speaker/speakers_list_item.dart';
 import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 
@@ -21,11 +20,7 @@ class SpeakersPage extends StatelessWidget {
             child: Text('Error'),
           );
         } else {
-          return _SpeakersList(
-            speakers: state.speakers
-                .map((speaker) => speaker.copyWith(sessions: speaker.getSpeakerSessions(sessions: state.sessions)))
-                .toList(),
-          );
+          return _SpeakersList(speakers: state.speakers);
         }
       },
     );
