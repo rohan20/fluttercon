@@ -11,17 +11,15 @@ class SessionsListItem extends StatelessWidget {
   const SessionsListItem({
     required this.session,
     required this.sessionSpeakers,
-    required this.sessionCategories,
     required this.sessionRoomName,
     required this.categories,
-    required this.startsAtSameTimeAsPreviousSession,
+    this.startsAtSameTimeAsPreviousSession = false,
     this.backgroundColor = Colors.transparent,
     super.key,
   });
 
   final Session session;
   final List<Speaker> sessionSpeakers;
-  final List<Category> sessionCategories;
   final String sessionRoomName;
   final List<Category> categories;
   final bool startsAtSameTimeAsPreviousSession;
@@ -36,7 +34,7 @@ class SessionsListItem extends StatelessWidget {
             return SessionDetailsPage(
               session: session,
               speakers: sessionSpeakers,
-              categories: sessionCategories,
+              categories: session.getSessionCategories(categories: categories),
               roomName: sessionRoomName,
             );
           },

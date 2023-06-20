@@ -160,13 +160,11 @@ class _SessionsList extends StatelessWidget {
             .where((speaker) => session.speakerIds.contains(speaker.id))
             .map((speaker) => speaker.copyWith(sessions: speaker.getSpeakerSessions(sessions: sessions)))
             .toList();
-        final sessionCategories = categories.where((category) => session.categoryIds.contains(category.id)).toList();
         final sessionRoomName = rooms.firstWhere((room) => room.id == session.roomId).name;
 
         return SessionsListItem(
           session: session,
           sessionSpeakers: sessionSpeakers,
-          sessionCategories: sessionCategories,
           sessionRoomName: sessionRoomName,
           categories: categories,
           startsAtSameTimeAsPreviousSession: startsAtSameTimeAsPreviousSession,
