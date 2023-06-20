@@ -100,38 +100,44 @@ class _SessionsListItemContent extends StatelessWidget {
           },
           Expanded(
             flex: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  session.title.trim(),
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  speakers.map((speaker) => speaker.fullName).join(', '),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SessionRoom(roomName: roomName),
-                    const SizedBox(width: 4),
-                    Row(
-                      children: [
-                        SessionFormat(
-                          sessionFormat: sessionFormat,
-                          hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession ?? false,
-                        ),
-                        const SizedBox(width: 4),
-                        SessionDuration(durationInMinutes: session.duration),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-              ],
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade900, width: 0.1),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    session.title.trim(),
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    speakers.map((speaker) => speaker.fullName).join(', '),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SessionRoom(roomName: roomName),
+                      const SizedBox(width: 4),
+                      Row(
+                        children: [
+                          SessionFormat(
+                            sessionFormat: sessionFormat,
+                            hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession ?? false,
+                          ),
+                          const SizedBox(width: 4),
+                          SessionDuration(durationInMinutes: session.duration),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
