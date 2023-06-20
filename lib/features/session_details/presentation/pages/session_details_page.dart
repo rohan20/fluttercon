@@ -51,10 +51,7 @@ class SessionDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               for (final speaker in speakers) ...{
-                SpeakersListItem(
-                  speaker: speaker,
-                  backgroundColor: Colors.transparent,
-                ),
+                SpeakersListItem(speaker: speaker),
               },
               const SizedBox(height: 16),
               Text('Description:', style: Theme.of(context).textTheme.bodyMedium),
