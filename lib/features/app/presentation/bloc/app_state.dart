@@ -50,9 +50,21 @@ class AppState {
 
   List<Session> get day1SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day1);
 
+  List<Session> get day1FavouriteSessionsSortedByStartTime {
+    return day1SessionsSortedByStartTime.where((session) => favouriteSessionIds.contains(session.id)).toList();
+  }
+
   List<Session> get day2SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day2);
 
+  List<Session> get day2FavouriteSessionsSortedByStartTime {
+    return day2SessionsSortedByStartTime.where((session) => favouriteSessionIds.contains(session.id)).toList();
+  }
+
   List<Session> get day3SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day3);
+
+  List<Session> get day3FavouriteSessionsSortedByStartTime {
+    return day3SessionsSortedByStartTime.where((session) => favouriteSessionIds.contains(session.id)).toList();
+  }
 
   bool isFavouriteSession({required String id}) => favouriteSessionIds.contains(id);
 }
