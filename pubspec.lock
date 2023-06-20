@@ -612,7 +612,7 @@ packages:
     source: hosted
     version: "3.0.6"
   util:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "packages/util"
       relative: true
