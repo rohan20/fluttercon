@@ -1,8 +1,10 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
 import 'package:fluttercon/common/widgets/speaker/speaker_list_item.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SpeakerDetailsPage extends StatelessWidget {
   const SpeakerDetailsPage(this.speaker, {super.key});
@@ -71,27 +73,59 @@ class _SpeakerLinks extends StatelessWidget {
       runSpacing: 8,
       children: links.map(
         (link) {
-          // TODO(rohan20): Tap
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.red.shade50,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(link.iconData, size: 14, color: Colors.grey.shade700),
-                const SizedBox(width: 6),
-                Text(
-                  link.title,
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-              ],
+          return GestureDetector(
+            onTap: () async {
+              final linkUri = Uri.parse(link.url);
+
+              if (await canLaunchUrl(linkUri)) {
+                try {
+                  await launchUrl(linkUri);
+                } catch (e) {
+                  // ignore: use_build_context_synchronously
+                  _showFailedToLaunchUrlSnackbar(context: context, url: link.url);
+                }
+              } else {
+                // ignore: use_build_context_synchronously
+                _showFailedToLaunchUrlSnackbar(context: context, url: link.url);
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.red.shade50,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(link.iconData, size: 14, color: Colors.grey.shade700),
+                  const SizedBox(width: 6),
+                  Text(
+                    link.title,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ],
+              ),
             ),
           );
         },
       ).toList(),
+    );
+  }
+
+  void _showFailedToLaunchUrlSnackbar({required BuildContext context, required String url}) {
+    if (!context.mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Could not open url: $url'),
+        action: SnackBarAction(
+          label: 'Copy',
+          onPressed: () => Clipboard.setData(ClipboardData(text: url)),
+        ),
+      ),
     );
   }
 }
