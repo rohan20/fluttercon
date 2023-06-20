@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttercon/features/session_details/presentation/pages/speaker_details_page.dart';
+import 'package:fluttercon/features/speaker_details/presentation/pages/speaker_details_page.dart';
 
 const _speakerImageRadius = 24.0;
 
