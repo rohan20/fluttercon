@@ -1,47 +1,63 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercon/features/session_details/presentation/pages/speaker_details_page.dart';
 
 const _speakerImageRadius = 24.0;
 
 class SpeakersListItem extends StatelessWidget {
   const SpeakersListItem({
     required this.speaker,
-    required this.backgroundColor,
+    this.backgroundColor = Colors.transparent,
+    this.allowTap = true,
+    this.padding = const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
     super.key,
   });
 
   final Speaker speaker;
   final Color backgroundColor;
+  final bool allowTap;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      color: backgroundColor,
-      child: Row(
-        children: [
-          _SpeakerImage(name: speaker.fullName, imageUrl: speaker.profilePictureUrl),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  speaker.fullName,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-                if (speaker.tagLine.isNotEmpty) ...{
-                  const SizedBox(height: 4),
-                  Text(
-                    speaker.tagLine,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                },
-              ],
+    return GestureDetector(
+      onTap: () {
+        if (allowTap) {
+          Navigator.of(context).push(
+            MaterialPageRoute<Widget>(
+              builder: (_) => SpeakerDetailsPage(speaker),
             ),
-          ),
-        ],
+          );
+        }
+      },
+      child: Container(
+        padding: padding,
+        color: backgroundColor,
+        child: Row(
+          children: [
+            _SpeakerImage(name: speaker.fullName, imageUrl: speaker.profilePictureUrl),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    speaker.fullName,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  if (speaker.tagLine.isNotEmpty) ...{
+                    const SizedBox(height: 4),
+                    Text(
+                      speaker.tagLine,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  },
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
