@@ -1,4 +1,6 @@
 import 'package:conference_data/conference_data.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 
 extension SessionExt on Session {
   List<Speaker> getSessionSpeakers({required List<Speaker> speakers}) {
@@ -19,5 +21,20 @@ extension SessionExt on Session {
 
       return isCategoryTypeSessionFormat && categoryIds.contains(category.id);
     });
+  }
+}
+
+extension SessionFormatExt on String {
+  Color get sessionFormatBorderColor {
+    switch (this) {
+      case ConferenceMetadata.lightningTalkId:
+        return Colors.blue.shade500;
+      case ConferenceMetadata.sessionId:
+        return Colors.orange.shade500;
+      case ConferenceMetadata.workshopId || ConferenceMetadata.keynoteId || ConferenceMetadata.panelDiscussionId:
+        return Colors.green.shade500;
+      default:
+        return Colors.grey.shade500;
+    }
   }
 }

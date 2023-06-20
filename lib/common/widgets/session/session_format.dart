@@ -1,5 +1,6 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercon/common/extensions/session_extensions.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 
 class SessionFormat extends StatelessWidget {
@@ -23,7 +24,7 @@ class SessionFormat extends StatelessWidget {
       decoration: BoxDecoration(
         color: sessionFormat.id.backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: sessionFormat.id.borderColor, width: 0.5),
+        border: Border.all(color: sessionFormat.id.sessionFormatBorderColor, width: 0.5),
       ),
       child: Text(
         sessionFormat.name,
@@ -33,7 +34,7 @@ class SessionFormat extends StatelessWidget {
   }
 }
 
-extension _CategoryExt on String {
+extension CategoryExt on String {
   Color get backgroundColor {
     switch (this) {
       case ConferenceMetadata.lightningTalkId:
@@ -44,19 +45,6 @@ extension _CategoryExt on String {
         return Colors.green.shade50;
       default:
         return Colors.grey.shade200;
-    }
-  }
-
-  Color get borderColor {
-    switch (this) {
-      case ConferenceMetadata.lightningTalkId:
-        return Colors.blue.shade500;
-      case ConferenceMetadata.sessionId:
-        return Colors.orange.shade500;
-      case ConferenceMetadata.workshopId || ConferenceMetadata.keynoteId || ConferenceMetadata.panelDiscussionId:
-        return Colors.green.shade500;
-      default:
-        return Colors.grey.shade500;
     }
   }
 }
