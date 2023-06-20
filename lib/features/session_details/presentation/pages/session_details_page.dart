@@ -34,7 +34,7 @@ class SessionDetailsPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 16),
                   Align(child: _SessionTitle(session.title)),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   Align(child: _SessionDateTime(session.startsAt)),
                   const SizedBox(height: 12),
                   Row(
@@ -47,7 +47,7 @@ class SessionDetailsPage extends StatelessWidget {
                       SessionDuration(durationInMinutes: session.duration),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   for (final speaker in sessionSpeakers) ...{
                     SpeakersListItem(speaker: speaker),
                   },
