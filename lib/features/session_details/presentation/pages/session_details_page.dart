@@ -1,79 +1,76 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/extensions/session_extensions.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
 import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
-import 'package:fluttercon/common/widgets/speaker/speaker_list_item.dart';
+import 'package:fluttercon/common/widgets/speaker/speakers_list_item.dart';
+import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:intl/intl.dart';
 
 class SessionDetailsPage extends StatelessWidget {
-  const SessionDetailsPage({
-    required this.session,
-    required this.speakers,
-    required this.categories,
-    required this.roomName,
-    super.key,
-  });
+  const SessionDetailsPage(this.session, {super.key});
 
   final Session session;
-  final List<Speaker> speakers;
-  final List<Category> categories;
-  final String roomName;
 
   @override
   Widget build(BuildContext context) {
-    final sessionFormatCategory = session.getSessionFormatCategory(
-      categories: categories,
-      sessionCategoryIds: session.categoryIds,
-    );
-
     return Scaffold(
       appBar: const ConferenceAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              Align(child: _SessionTitle(session.title)),
-              const SizedBox(height: 16),
-              Align(child: _SessionDateTime(session.startsAt)),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          child: BlocBuilder<AppBloc, AppState>(
+            builder: (context, state) {
+              final sessionSpeakers = session.getSessionSpeakers(speakers: state.speakers);
+              final sessionCategories = session.getSessionCategories(categories: state.categories);
+              final sessionFormatCategory = session.getSessionFormatCategory(categories: sessionCategories);
+              final roomName = session.getSessionRoom(rooms: state.rooms).name;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SessionFormat(sessionFormat: sessionFormatCategory),
-                  const SizedBox(width: 8),
-                  SessionRoom(roomName: roomName),
-                  const SizedBox(width: 8),
-                  SessionDuration(durationInMinutes: session.duration),
+                  const SizedBox(height: 16),
+                  Align(child: _SessionTitle(session.title)),
+                  const SizedBox(height: 16),
+                  Align(child: _SessionDateTime(session.startsAt)),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SessionFormat(sessionFormat: sessionFormatCategory),
+                      const SizedBox(width: 8),
+                      SessionRoom(roomName: roomName),
+                      const SizedBox(width: 8),
+                      SessionDuration(durationInMinutes: session.duration),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  for (final speaker in sessionSpeakers) ...{
+                    SpeakersListItem(speaker: speaker),
+                  },
+                  const SizedBox(height: 16),
+                  Text('Description:', style: Theme.of(context).textTheme.bodyMedium),
+                  const SizedBox(height: 12),
+                  Text(
+                    session.description,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
+                  ),
+                  const SizedBox(height: 16),
+                  Text('Categories:', style: Theme.of(context).textTheme.bodyMedium),
+                  const SizedBox(height: 12),
+                  _SessionCategories(
+                    categories: List.from(sessionCategories)
+                      ..removeWhere(
+                        (category) => category.id == sessionFormatCategory.id,
+                      ),
+                  ),
+                  const SizedBox(height: 32),
                 ],
-              ),
-              const SizedBox(height: 16),
-              for (final speaker in speakers) ...{
-                SpeakersListItem(
-                  speaker: speaker,
-                  backgroundColor: Colors.transparent,
-                ),
-              },
-              const SizedBox(height: 16),
-              Text('Description:', style: Theme.of(context).textTheme.bodyMedium),
-              const SizedBox(height: 12),
-              Text(
-                session.description,
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
-              ),
-              const SizedBox(height: 16),
-              Text('Categories:', style: Theme.of(context).textTheme.bodyMedium),
-              const SizedBox(height: 12),
-              _SessionCategories(
-                categories: List.from(categories)..removeWhere((category) => category.id == sessionFormatCategory.id),
-              ),
-              const SizedBox(height: 32),
-            ],
+              );
+            },
           ),
         ),
       ),

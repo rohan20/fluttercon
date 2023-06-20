@@ -1,8 +1,8 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 
-class HomeState {
-  const HomeState({
+class AppState {
+  const AppState({
     this.isLoading = false,
     this.isError = false,
     this.sessions = const [],
@@ -18,7 +18,7 @@ class HomeState {
   final List<Category> categories;
   final List<Room> rooms;
 
-  HomeState copyWith({
+  AppState copyWith({
     bool? isLoading,
     bool? isError,
     List<Session>? sessions,
@@ -26,7 +26,7 @@ class HomeState {
     List<Category>? categories,
     List<Room>? rooms,
   }) {
-    return HomeState(
+    return AppState(
       isLoading: isLoading ?? this.isLoading,
       isError: isError ?? this.isError,
       sessions: sessions ?? this.sessions,

@@ -1,24 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
-import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/pages/sessions_page.dart';
 import 'package:fluttercon/features/home/presentation/pages/speakers_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => HomeBloc()..add(HomePageCreatedEvent()),
-      child: const _HomePageContent(),
-    );
-  }
-}
-
-class _HomePageContent extends StatelessWidget {
-  const _HomePageContent();
 
   @override
   Widget build(BuildContext context) {

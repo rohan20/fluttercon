@@ -9,7 +9,7 @@ class Speaker {
     required this.tagLine,
     required this.profilePictureUrl,
     required this.sessionIds,
-    // TODO(rohan20): Add "links"
+    this.links = const [],
   });
 
   factory Speaker.fromSpeakerModel(SpeakerModel speakerModel) {
@@ -19,6 +19,7 @@ class Speaker {
       bio: speakerModel.bio,
       tagLine: speakerModel.tagLine,
       profilePictureUrl: speakerModel.profilePictureUrl,
+      links: speakerModel.links.map<Link>(Link.fromLinkModel).toList(),
       sessionIds: speakerModel.sessionIds,
     );
   }
@@ -29,20 +30,10 @@ class Speaker {
   final String tagLine;
   final String profilePictureUrl;
   final List<String> sessionIds;
-
-  Speaker copyWith({List<Session>? sessions}) {
-    return Speaker(
-      id: id,
-      fullName: fullName,
-      bio: bio,
-      tagLine: tagLine,
-      profilePictureUrl: profilePictureUrl,
-      sessionIds: sessionIds,
-    );
-  }
+  final List<Link> links;
 
   @override
   String toString() {
-    return 'Speaker{id: $id, fullName: $fullName, bio: $bio, tagLine: $tagLine, profilePictureUrl: $profilePictureUrl, sessionIds: $sessionIds}';
+    return 'Speaker{id: $id, fullName: $fullName, bio: $bio, tagLine: $tagLine, profilePictureUrl: $profilePictureUrl, sessionIds: $sessionIds, links: $links}';
   }
 }

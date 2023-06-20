@@ -1,13 +1,9 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttercon/common/extensions/session_extensions.dart';
-import 'package:fluttercon/common/widgets/session/session_duration.dart';
-import 'package:fluttercon/common/widgets/session/session_format.dart';
-import 'package:fluttercon/common/widgets/session/session_room.dart';
-import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
+import 'package:fluttercon/common/widgets/session/sessions_list_item.dart';
+import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
-import 'package:fluttercon/features/session_details/presentation/pages/session_details_page.dart';
 import 'package:intl/intl.dart';
 
 class SessionsPage extends StatelessWidget {
@@ -15,7 +11,7 @@ class SessionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
         if (state.isLoading) {
           return const Center(
@@ -159,112 +155,15 @@ class _SessionsList extends StatelessWidget {
 
         final startsAtSameTimeAsPreviousSession = index > 0 && sessions[index - 1].startsAt == session.startsAt;
 
-        final sessionSpeakers = speakers.where((speaker) => session.speakerIds.contains(speaker.id)).toList();
-        final sessionCategories = categories.where((category) => session.categoryIds.contains(category.id)).toList();
-        final sessionRoomName = rooms.firstWhere((room) => room.id == session.roomId).name;
-
-        return GestureDetector(
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute<Widget>(
-              builder: (_) {
-                return SessionDetailsPage(
-                  session: session,
-                  speakers: sessionSpeakers,
-                  categories: sessionCategories,
-                  roomName: sessionRoomName,
-                );
-              },
-            ),
-          ),
-          child: _SessionsListItem(
-            session: session,
-            speakers: sessionSpeakers,
-            sessionFormat: session.getSessionFormatCategory(
-              categories: categories,
-              sessionCategoryIds: session.categoryIds,
-            ),
-            roomName: sessionRoomName,
-            showStartTime: !startsAtSameTimeAsPreviousSession,
-            backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
-          ),
+        return SessionsListItem(
+          session: session,
+          sessionTimeVisibility: startsAtSameTimeAsPreviousSession //
+              ? SessionTimeVisibility.invisible
+              : SessionTimeVisibility.visible,
+          backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
+          hideSessionFormatIfItIsSession: true,
         );
       },
-    );
-  }
-}
-
-class _SessionsListItem extends StatelessWidget {
-  const _SessionsListItem({
-    required this.session,
-    required this.speakers,
-    required this.sessionFormat,
-    required this.roomName,
-    required this.showStartTime,
-    required this.backgroundColor,
-  });
-
-  final Session session;
-  final List<Speaker> speakers;
-  final Category sessionFormat;
-  final String roomName;
-  final bool showStartTime;
-  final Color backgroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-      color: backgroundColor,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Opacity(
-              opacity: showStartTime ? 1 : 0,
-              child: Center(
-                child: Text(
-                  DateFormat('HH:mm').format(session.startsAt),
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            flex: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  session.title,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  speakers.map((speaker) => speaker.fullName).join(', '),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SessionRoom(roomName: roomName),
-                    const SizedBox(width: 4),
-                    Row(
-                      children: [
-                        SessionFormat(sessionFormat: sessionFormat, hideIfSessionFormatIsSession: true),
-                        const SizedBox(width: 4),
-                        SessionDuration(durationInMinutes: session.duration),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
