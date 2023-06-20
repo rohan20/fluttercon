@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/widgets/session/sessions_tab_bar_view.dart';
 import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 
-class SessionsPage extends StatelessWidget {
-  const SessionsPage({super.key});
+class FavouriteSessionsPage extends StatelessWidget {
+  const FavouriteSessionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,13 @@ class SessionsPage extends StatelessWidget {
           );
         } else {
           return SessionsTabBarView(
-            day1SessionsSortedByStartTime: state.day1SessionsSortedByStartTime,
-            day2SessionsSortedByStartTime: state.day2SessionsSortedByStartTime,
-            day3SessionsSortedByStartTime: state.day3SessionsSortedByStartTime,
+            day1SessionsSortedByStartTime: state.day1FavouriteSessionsSortedByStartTime,
+            day2SessionsSortedByStartTime: state.day2FavouriteSessionsSortedByStartTime,
+            day3SessionsSortedByStartTime: state.day3FavouriteSessionsSortedByStartTime,
             speakers: state.speakers,
             categories: state.categories,
             rooms: state.rooms,
-            emptySessionsMessage: 'No sessions found for this day',
+            emptySessionsMessage: 'No favourite sessions found for this day',
           );
         }
       },

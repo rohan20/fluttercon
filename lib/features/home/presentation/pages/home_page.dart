@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
+import 'package:fluttercon/features/favourites/presentation/pages/favourite_sessions_page.dart';
 import 'package:fluttercon/features/home/presentation/pages/sessions_page.dart';
 import 'package:fluttercon/features/home/presentation/pages/speakers_page.dart';
 
@@ -42,7 +43,7 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
             if (_selectedTab == _Tab.speakers) {
               return const SpeakersPage();
             } else if (_selectedTab == _Tab.favourites) {
-              return const Text('Favourites');
+              return const FavouriteSessionsPage();
             } else {
               return const SessionsPage();
             }

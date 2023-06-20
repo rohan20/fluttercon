@@ -2,6 +2,7 @@ import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/extensions/session_extensions.dart';
+import 'package:fluttercon/common/widgets/session/favourite_session_icon.dart';
 import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
@@ -109,9 +110,17 @@ class _SessionsListItemContent extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      session.title.trim(),
-                      style: Theme.of(context).textTheme.titleSmall,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            session.title.trim(),
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                        FavouriteSessionIcon(sessionId: session.id),
+                      ],
                     ),
                     const SizedBox(height: 8),
                     Text(

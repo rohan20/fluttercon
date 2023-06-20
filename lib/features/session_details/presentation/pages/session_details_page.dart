@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/extensions/session_extensions.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
+import 'package:fluttercon/common/widgets/session/favourite_session_icon.dart';
 import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
@@ -67,11 +68,19 @@ class SessionDetailsPage extends StatelessWidget {
                         (category) => category.id == sessionFormatCategory.id,
                       ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 120), // big enough to ensure that the FAB doesn't hide any content below it
                 ],
               );
             },
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.read<AppBloc>().add(SessionFavouriteIconTappedEvent(sessionId: session.id)),
+        child: FavouriteSessionIcon(
+          sessionId: session.id,
+          allowTap: false, // to prevent the icon from being clicked directly which would mean no FAB splash effect
+          inactiveColor: Colors.black45,
         ),
       ),
     );
