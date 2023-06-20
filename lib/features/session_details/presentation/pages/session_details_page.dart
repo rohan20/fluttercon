@@ -5,7 +5,7 @@ import 'package:fluttercon/common/widgets/conference_app_bar.dart';
 import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
-import 'package:fluttercon/common/widgets/speaker/speaker_list_item.dart';
+import 'package:fluttercon/common/widgets/speaker/speakers_list_item.dart';
 import 'package:intl/intl.dart';
 
 class SessionDetailsPage extends StatelessWidget {

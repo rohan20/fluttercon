@@ -2,7 +2,7 @@ import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/extensions/speaker_extensions.dart';
-import 'package:fluttercon/common/widgets/speaker/speaker_list_item.dart';
+import 'package:fluttercon/common/widgets/speaker/speakers_list_item.dart';
 import 'package:fluttercon/features/home/presentation/bloc/bloc.dart';
 
 class SpeakersPage extends StatelessWidget {
