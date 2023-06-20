@@ -2,7 +2,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="fluttercon"
+        android:label="Fluttercon"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
