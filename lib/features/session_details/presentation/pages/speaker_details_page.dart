@@ -2,6 +2,7 @@ import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
 import 'package:fluttercon/common/widgets/speaker/speaker_list_item.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SpeakerDetailsPage extends StatelessWidget {
   const SpeakerDetailsPage(this.speaker, {super.key});
@@ -34,10 +35,11 @@ class SpeakerDetailsPage extends StatelessWidget {
                 ),
               },
               const SizedBox(height: 16),
-              // TODO(rohan20): Add links only if they exist.
-              Text('Links:', style: Theme.of(context).textTheme.bodyMedium),
-              const SizedBox(height: 12),
-              // TODO(rohan20): Add links
+              if (speaker.links.isNotEmpty) ...{
+                Text('Links:', style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 12),
+                _SpeakerLinks(links: speaker.links),
+              },
               if (speaker.sessions != null && speaker.sessions!.isNotEmpty) ...{
                 const SizedBox(height: 16),
                 Text('Sessions:', style: Theme.of(context).textTheme.bodyMedium),
@@ -52,5 +54,59 @@ class SpeakerDetailsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _SpeakerLinks extends StatelessWidget {
+  const _SpeakerLinks({
+    required this.links,
+  });
+
+  final List<Link> links;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 4,
+      runSpacing: 8,
+      children: links.map(
+        (link) {
+          // TODO(rohan20): Tap
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.red.shade50,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(link.iconData, size: 14, color: Colors.grey.shade700),
+                const SizedBox(width: 6),
+                Text(
+                  link.title,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+              ],
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+}
+
+extension _LinkExt on Link {
+  IconData get iconData {
+    switch (type.toLowerCase()) {
+      case 'twitter':
+        return FontAwesomeIcons.twitter;
+      case 'instagram':
+        return FontAwesomeIcons.instagram;
+      case 'linkedin':
+        return FontAwesomeIcons.linkedin;
+      default:
+        return FontAwesomeIcons.globe;
+    }
   }
 }
