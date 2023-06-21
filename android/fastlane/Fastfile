@@ -1,0 +1,34 @@
+default_platform(:android)
+
+APP_ID_PRODUCTION = "com.rohantaneja.fluttercon"
+
+platform :android do
+
+  private_lane :cleanup do
+    sh "fvm flutter clean"
+    sh "fvm flutter packages get"
+  end
+
+  desc "Build App"
+  private_lane :build_app do
+    cleanup
+    gradle(task: "clean", print_command: true)
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      print_command: true
+    )
+  end
+
+  desc "Upload Production App to Google Play Store"
+  lane :upload_production do
+    build_app(app_id: APP_ID_PRODUCTION, should_build_app_bundle: true)
+    upload_to_play_store(
+      track: "internal",
+      package_name: APP_ID_PRODUCTION,
+      json_key: "./fastlane/service_account.json",
+      aab: "../build/app/outputs/bundle/Release/app-release.aab",
+    )
+  end
+
+end
