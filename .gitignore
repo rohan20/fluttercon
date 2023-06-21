@@ -45,3 +45,5 @@ app.*.map.json
 
 # FVM
 .fvm/flutter_sdk
+
+build/
