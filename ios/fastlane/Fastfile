@@ -1,0 +1,141 @@
+default_platform(:ios)
+
+TEAM_ID = "YV55MHHS8A"
+GIT_BRANCH = TEAM_ID
+
+BUNDLE_ID_PRODUCTION = "com.rohantaneja.fluttercon"
+
+def generate_identifiers(app_bundle_id, extensions)
+  bundle_ids = [app_bundle_id]
+
+  extensions.each { |appExtension|
+    bundle_ids.push(app_bundle_id + "." + appExtension)
+  }
+
+  bundle_ids
+end
+
+platform :ios do
+
+  desc "Delete all certificates and provisioning profiles for development, enterprise and appstore"
+  lane :delete_all_certificates_and_provisioning_profiles do
+    delete_certificates_and_provisioning_profiles(bundle_id: BUNDLE_ID_PRODUCTION, readonly: false)
+    delete_certificates_and_provisioning_profiles(bundle_id: BUNDLE_ID_PRODUCTION, type: "appstore", readonly: false)
+  end
+
+  desc "Delete certificates and provisioning profiles for the provided type [development/adhoc/enterprise/appstore]"
+  lane :delete_certificates_and_provisioning_profiles do |options|
+    bundle_id = options[:bundle_id]
+    type = options[:type] == nil ? "development" : options[:type]
+
+    match_nuke(
+      type: type,
+      team_id: TEAM_ID,
+      app_identifier: bundle_id,
+      git_branch: GIT_BRANCH,
+      force: options[:force] == nil ? false : options[:force],
+      readonly: options[:readonly] == nil ? true : options[:readonly],
+      verbose: options[:verbose],
+      profile_name: type == "development" ? get_profile_name_development(bundle_id) : get_profile_name_appstore(bundle_id)
+    )
+  end
+
+  # This will NOT re-create certificates and provisioning profiles if they exist on the dev portal and are valid.
+  #
+  # Use this lane for situations like adding a new entitlement to an app identifier on the dev portal. Fastlane will
+  # automatically detect that the certificates on dev portal are valid so it will not re-create them. But since
+  # provisioning profiles on dev portal won't have this new capability from the app identifier, it will re-create them.
+  desc "Regenerate all provisioning profiles for development, enterprise and appstore"
+  lane :regenerate_all_provisioning_profiles do |options|
+    readonly = false
+    force = options[:force]
+
+    sync_certificates_and_provisioning_profiles(bundle_id: BUNDLE_ID_PRODUCTION, readonly: readonly, force: force)
+    sync_certificates_and_provisioning_profiles(bundle_id: BUNDLE_ID_PRODUCTION, readonly: readonly, force: force, type: "appstore")
+  end
+
+  desc "Sync all certificates and provisioning profiles for development, enterprise and appstore"
+  lane :sync_all_certificates_and_provisioning_profiles do |options|
+    readonly = options[:readonly]
+
+    sync_certificates_and_provisioning_profiles(bundle_id: BUNDLE_ID_PRODUCTION, readonly: readonly)
+    sync_certificates_and_provisioning_profiles(bundle_id: BUNDLE_ID_PRODUCTION, type: "appstore", readonly: readonly)
+  end
+
+  desc "Sync certificates and provisioning profiles for the provided type [development/adhoc/enterprise/appstore]"
+  lane :sync_certificates_and_provisioning_profiles do |options|
+    bundle_id = options[:bundle_id]
+    type = options[:type] == nil ? "development" : options[:type]
+
+    match(
+      type: type,
+      team_id: TEAM_ID,
+      app_identifier: bundle_id,
+      git_branch: GIT_BRANCH,
+      force: options[:force] == nil ? false : options[:force],
+      readonly: options[:readonly] == nil ? true : options[:readonly],
+      verbose: options[:verbose],
+      profile_name: type == "development" ? get_profile_name_development(bundle_id) : get_profile_name_appstore(bundle_id)
+    )
+  end
+
+  desc "Upload Production App to TestFlight"
+  lane :upload_production do
+    bundle_id = BUNDLE_ID_PRODUCTION
+
+    build_production
+    # TODO: Add back after Firebase integration: upload_debug_symbols_to_crashlytics(bundle_id: bundle_id)
+    upload_to_testflight(
+      app_identifier: bundle_id,
+      skip_submission: true,
+      skip_waiting_for_build_processing: true,
+      team_id: TEAM_ID
+    )
+  end
+
+  desc "Build - Production"
+  lane :build_production do
+    bundle_id = BUNDLE_ID_PRODUCTION
+
+    sync_certificates_and_provisioning_profiles(bundle_id: bundle_id, type: "appstore")
+    cleanup
+    gym(
+      scheme: "Production",
+      export_method: "app-store",
+      clean: true,
+      include_bitcode: false,
+      include_symbols: true,
+      export_team_id: TEAM_ID,
+      export_options: {
+        signingStyle: "manual",
+        provisioningProfiles: {
+          bundle_id => "match AppStore #{bundle_id}",
+        }
+      }
+    )
+  end
+
+  def get_profile_name_development(bundle_id)
+    return "match Development #{bundle_id}"
+  end
+
+  def get_profile_name_appstore(bundle_id)
+    return "match AppStore #{bundle_id}"
+  end
+
+  private_lane :cleanup do
+    sh "fvm flutter clean"
+    sh "fvm flutter packages get"
+    cocoapods(clean_install: true)
+  end
+
+  def get_scheme(bundle_id)
+    case (bundle_id)
+    when BUNDLE_ID_PRODUCTION
+      return "production"
+    else
+      UI.crash!("Scheme " + bundle_id + " seems to be invalid. Please check again.")
+    end
+  end
+
+end
