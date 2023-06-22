@@ -1,4 +1,5 @@
 import 'package:conference_data/conference_data.dart';
+import 'package:fluttercon/common/extensions/session_extensions.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 
 class AppState {
@@ -10,6 +11,7 @@ class AppState {
     this.categories = const [],
     this.rooms = const [],
     this.favouriteSessionIds = const {},
+    this.searchTerm = '',
   });
 
   final bool isLoading;
@@ -19,6 +21,7 @@ class AppState {
   final List<Category> categories;
   final List<Room> rooms;
   final Set<String> favouriteSessionIds;
+  final String searchTerm;
 
   AppState copyWith({
     bool? isLoading,
@@ -28,6 +31,7 @@ class AppState {
     List<Category>? categories,
     List<Room>? rooms,
     Set<String>? favouriteSessionIds,
+    String? searchTerm,
   }) {
     return AppState(
       isLoading: isLoading ?? this.isLoading,
@@ -37,11 +41,30 @@ class AppState {
       categories: categories ?? this.categories,
       rooms: rooms ?? this.rooms,
       favouriteSessionIds: favouriteSessionIds ?? this.favouriteSessionIds,
+      searchTerm: searchTerm ?? this.searchTerm,
     );
   }
 
+  List<Session> get _sessionsFilteredBySearchTerm {
+    if (searchTerm.isEmpty) {
+      return List.of(sessions);
+    }
+
+    return List.of(sessions).where((session) {
+      final sessionTitleMatchesSearchTerm = session.title.containsIgnoreCase(searchTerm);
+
+      final sessionSpeakers = session.getSessionSpeakers(speakers: speakers);
+
+      final speakerNameOrTagLineMatchSearchTerm = sessionSpeakers.any((speaker) {
+        return speaker.fullName.containsIgnoreCase(searchTerm) || speaker.tagLine.containsIgnoreCase(searchTerm);
+      });
+
+      return sessionTitleMatchesSearchTerm || speakerNameOrTagLineMatchSearchTerm;
+    }).toList();
+  }
+
   List<Session> get _sessionsSortedByStartTime {
-    return sessions.toList()..sort((a, b) => a.startsAt.compareTo(b.startsAt));
+    return _sessionsFilteredBySearchTerm.toList()..sort((a, b) => a.startsAt.compareTo(b.startsAt));
   }
 
   List<Session> _getSessionsForDay(DateTime day) {
@@ -69,8 +92,12 @@ class AppState {
   bool isFavouriteSession({required String id}) => favouriteSessionIds.contains(id);
 }
 
-extension DateTimeExt on DateTime {
+extension _DateTimeExt on DateTime {
   bool isSameDayAs(DateTime other) {
     return year == other.year && month == other.month && day == other.day;
   }
+}
+
+extension _StringExt on String {
+  bool containsIgnoreCase(String other) => toLowerCase().contains(other.toLowerCase());
 }
