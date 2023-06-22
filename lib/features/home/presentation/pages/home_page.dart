@@ -4,28 +4,14 @@ import 'package:fluttercon/features/favourites/presentation/pages/favourite_sess
 import 'package:fluttercon/features/home/presentation/pages/sessions_page.dart';
 import 'package:fluttercon/features/home/presentation/pages/speakers_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: ConferenceAppBar(),
-      body: Center(
-        child: _BottomNavigationBar(),
-      ),
-    );
-  }
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _BottomNavigationBar extends StatefulWidget {
-  const _BottomNavigationBar();
-
-  @override
-  State<_BottomNavigationBar> createState() => _BottomNavigationBarState();
-}
-
-class _BottomNavigationBarState extends State<_BottomNavigationBar> {
+class _HomePageState extends State<HomePage> {
   _Tab _selectedTab = _Tab.sessions;
 
   void _onBottomNavigationBarItemTapped(int index) {
@@ -37,6 +23,7 @@ class _BottomNavigationBarState extends State<_BottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const ConferenceAppBar(),
       body: Center(
         child: Builder(
           builder: (context) {
