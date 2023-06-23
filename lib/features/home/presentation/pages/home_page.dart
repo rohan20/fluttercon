@@ -93,7 +93,7 @@ class _BottomNavigationBarContent extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.play_circle_outline),
             activeIcon: Icon(Icons.play_circle),
-            label: 'Sessions',
+            label: 'Talks',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
