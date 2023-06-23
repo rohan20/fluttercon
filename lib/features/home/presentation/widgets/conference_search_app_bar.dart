@@ -16,9 +16,9 @@ class ConferenceSearchAppBar extends StatelessWidget implements PreferredSizeWid
         decoration: InputDecoration(
           hintText: 'Talk title / Speaker name or tagline',
           hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
-            fontSize: 14,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-          ),
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+              ),
           border: InputBorder.none,
           prefixIcon: const Icon(Icons.search),
           suffixIcon: IconButton(
