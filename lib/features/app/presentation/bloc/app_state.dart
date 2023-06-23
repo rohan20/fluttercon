@@ -94,6 +94,18 @@ class AppState {
   }
 
   bool isFavouriteSession({required String id}) => favouriteSessionIds.contains(id);
+
+  List<Speaker> get _speakersFilteredBySearchTerm {
+    if (!isInSearchMode || searchTerm.isEmpty) {
+      return List.of(speakers);
+    }
+
+    return List.of(speakers).where((speaker) {
+      return speaker.fullName.containsIgnoreCase(searchTerm) || speaker.tagLine.containsIgnoreCase(searchTerm);
+    }).toList();
+  }
+
+  List<Speaker> get filteredSpeakers => _speakersFilteredBySearchTerm;
 }
 
 extension _DateTimeExt on DateTime {

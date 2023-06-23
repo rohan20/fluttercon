@@ -20,7 +20,7 @@ class SpeakersPage extends StatelessWidget {
             child: Text('Error'),
           );
         } else {
-          return _SpeakersList(speakers: state.speakers);
+          return _SpeakersList(speakers: state.filteredSpeakers);
         }
       },
     );
