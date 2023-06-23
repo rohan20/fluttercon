@@ -12,6 +12,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(const AppState()) {
     on<AppLaunchedEvent>(_onAppLaunchedEvent);
     on<SessionFavouriteIconTappedEvent>(_onSessionFavouriteIconTappedEvent);
+    on<SearchButtonPressedEvent>(_onSearchButtonPressedEvent);
+    on<SearchCancelledEvent>(_onSearchCancelledEvent);
+    on<SearchTextChangedEvent>(_onSearchTextChangedEvent);
   }
 
   FutureOr<void> _onAppLaunchedEvent(event, Emitter<AppState> emit) async {
@@ -66,5 +69,25 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
 
     return favouriteSessionIds;
+  }
+
+  FutureOr<void> _onSearchButtonPressedEvent(_, Emitter<AppState> emit) {
+    if (state.isInSearchMode) {
+      _exitSearchMode(emit: emit);
+    } else {
+      emit(state.copyWith(isInSearchMode: true));
+    }
+  }
+
+  FutureOr<void> _onSearchCancelledEvent(_, Emitter<AppState> emit) {
+    _exitSearchMode(emit: emit);
+  }
+
+  void _exitSearchMode({required Emitter<AppState> emit}) {
+    emit(state.copyWith(isInSearchMode: false, searchTerm: ''));
+  }
+
+  FutureOr<void> _onSearchTextChangedEvent(SearchTextChangedEvent event, Emitter<AppState> emit) {
+    emit(state.copyWith(searchTerm: event.searchTerm));
   }
 }

@@ -11,6 +11,7 @@ class AppState {
     this.categories = const [],
     this.rooms = const [],
     this.favouriteSessionIds = const {},
+    this.isInSearchMode = false,
     this.searchTerm = '',
   });
 
@@ -21,6 +22,7 @@ class AppState {
   final List<Category> categories;
   final List<Room> rooms;
   final Set<String> favouriteSessionIds;
+  final bool isInSearchMode;
   final String searchTerm;
 
   AppState copyWith({
@@ -31,6 +33,7 @@ class AppState {
     List<Category>? categories,
     List<Room>? rooms,
     Set<String>? favouriteSessionIds,
+    bool? isInSearchMode,
     String? searchTerm,
   }) {
     return AppState(
@@ -41,12 +44,13 @@ class AppState {
       categories: categories ?? this.categories,
       rooms: rooms ?? this.rooms,
       favouriteSessionIds: favouriteSessionIds ?? this.favouriteSessionIds,
+      isInSearchMode: isInSearchMode ?? this.isInSearchMode,
       searchTerm: searchTerm ?? this.searchTerm,
     );
   }
 
   List<Session> get _sessionsFilteredBySearchTerm {
-    if (searchTerm.isEmpty) {
+    if (!isInSearchMode || searchTerm.isEmpty) {
       return List.of(sessions);
     }
 
