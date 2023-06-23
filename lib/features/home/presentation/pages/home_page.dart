@@ -87,28 +87,41 @@ class _BottomNavigationBarContent extends StatelessWidget {
           ),
         ],
       ),
-      child: BottomNavigationBar(
-        unselectedFontSize: 14,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.play_circle_outline),
-            activeIcon: Icon(Icons.play_circle),
-            label: 'Talks',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Speakers',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline_rounded),
-            activeIcon: Icon(Icons.favorite_rounded),
-            label: 'Favourites',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        onTap: onBottomNavigationBarItemTapped,
+      child: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          return BottomNavigationBar(
+            unselectedFontSize: 14,
+            items: <BottomNavigationBarItem>[
+              _BottomNavigationBarItemWithSearchResultsCount(
+                inactiveIconData: Icons.play_circle_outline,
+                activeIconData: Icons.play_circle,
+                isInSearchMode: state.isInSearchMode,
+                searchResultsCount: state.filteredSessionsCount,
+                labelSingular: 'Talk',
+                labelPlural: 'Talks',
+              ),
+              _BottomNavigationBarItemWithSearchResultsCount(
+                inactiveIconData: Icons.person_outline,
+                activeIconData: Icons.person,
+                isInSearchMode: state.isInSearchMode,
+                searchResultsCount: state.filteredSpeakersCount,
+                labelSingular: 'Speaker',
+                labelPlural: 'Speakers',
+              ),
+              _BottomNavigationBarItemWithSearchResultsCount(
+                inactiveIconData: Icons.favorite_outline_rounded,
+                activeIconData: Icons.favorite_rounded,
+                isInSearchMode: state.isInSearchMode,
+                searchResultsCount: state.filteredFavouriteSessionsCount,
+                labelSingular: 'Favourite',
+                labelPlural: 'Favourites',
+              ),
+            ],
+            currentIndex: selectedIndex,
+            selectedItemColor: Theme.of(context).colorScheme.primary,
+            onTap: onBottomNavigationBarItemTapped,
+          );
+        },
       ),
     );
   }
@@ -122,4 +135,44 @@ enum _Tab {
   const _Tab(this.tabIndex);
 
   final int tabIndex;
+}
+
+class _SearchResultCount extends StatelessWidget {
+  const _SearchResultCount(this.count, {this.isActive = false});
+
+  final int count;
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      count.toString(),
+      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            fontSize: 16,
+            color: isActive ? IconTheme.of(context).color : Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+          ),
+    );
+  }
+}
+
+class _BottomNavigationBarItemWithSearchResultsCount extends BottomNavigationBarItem {
+  _BottomNavigationBarItemWithSearchResultsCount({
+    required this.inactiveIconData,
+    required this.activeIconData,
+    required this.isInSearchMode,
+    required this.searchResultsCount,
+    required this.labelSingular,
+    required this.labelPlural,
+  }) : super(
+          icon: isInSearchMode ? _SearchResultCount(searchResultsCount) : Icon(inactiveIconData),
+          activeIcon: isInSearchMode ? _SearchResultCount(searchResultsCount, isActive: true) : Icon(activeIconData),
+          label: searchResultsCount == 1 ? labelSingular : labelPlural,
+        );
+
+  final IconData inactiveIconData;
+  final IconData activeIconData;
+  final bool isInSearchMode;
+  final int searchResultsCount;
+  final String labelSingular;
+  final String labelPlural;
 }
