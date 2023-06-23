@@ -17,6 +17,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   _Tab _selectedTab = _Tab.sessions;
 
+  late final FocusNode _searchFieldFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchFieldFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _searchFieldFocusNode.dispose();
+    super.dispose();
+  }
+
   void _onBottomNavigationBarItemTapped(int index) {
     setState(() {
       _selectedTab = _Tab.values[index];
@@ -27,7 +41,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: context.watch<AppBloc>().state.isInSearchMode
-          ? const ConferenceSearchAppBar() as PreferredSizeWidget // Not sure why we need this cast
+          ? ConferenceSearchAppBar(focusNode: _searchFieldFocusNode) as PreferredSizeWidget
+          // ^Not sure why this cast 'as PreferredSizeWidget' is needed
           : const ConferenceAppBar(),
       body: Center(
         child: Builder(
@@ -48,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         child: FloatingActionButton(
           onPressed: () {
             context.read<AppBloc>().add(SearchButtonPressedEvent());
-            FocusScope.of(context).requestFocus(FocusNode());
+            _searchFieldFocusNode.requestFocus();
           },
           child: BlocBuilder<AppBloc, AppState>(
             buildWhen: (previous, current) => previous.isInSearchMode != current.isInSearchMode,

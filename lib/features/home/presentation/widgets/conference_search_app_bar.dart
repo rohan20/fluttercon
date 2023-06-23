@@ -3,13 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 
 class ConferenceSearchAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ConferenceSearchAppBar({super.key});
+  const ConferenceSearchAppBar({this.focusNode, super.key});
+
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: TextField(
         autofocus: true,
+        focusNode: focusNode,
         decoration: InputDecoration(
           hintText: 'Talk title / Speaker name or tagline',
           hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
