@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: context.watch<AppBloc>().state.isInSearchMode
           ? ConferenceSearchAppBar(focusNode: _searchFieldFocusNode) as PreferredSizeWidget
           // ^Not sure why this cast 'as PreferredSizeWidget' is needed
@@ -92,51 +93,68 @@ class _BottomNavigationBarContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: BlocBuilder<AppBloc, AppState>(
-        builder: (context, state) {
-          return BottomNavigationBar(
-            unselectedFontSize: 14,
-            items: <BottomNavigationBarItem>[
-              _BottomNavigationBarItemWithSearchResultsCount(
-                inactiveIconData: Icons.play_circle_outline,
-                activeIconData: Icons.play_circle,
-                isInSearchMode: state.isInSearchMode,
-                searchResultsCount: state.filteredSessionsCount,
-                labelSingular: 'Talk',
-                labelPlural: 'Talks',
-              ),
-              _BottomNavigationBarItemWithSearchResultsCount(
-                inactiveIconData: Icons.person_outline,
-                activeIconData: Icons.person,
-                isInSearchMode: state.isInSearchMode,
-                searchResultsCount: state.filteredSpeakersCount,
-                labelSingular: 'Speaker',
-                labelPlural: 'Speakers',
-              ),
-              _BottomNavigationBarItemWithSearchResultsCount(
-                inactiveIconData: Icons.favorite_outline_rounded,
-                activeIconData: Icons.favorite_rounded,
-                isInSearchMode: state.isInSearchMode,
-                searchResultsCount: state.filteredFavouriteSessionsCount,
-                labelSingular: 'Favourite',
-                labelPlural: 'Favourites',
+    final mediaQuery = MediaQuery.of(context);
+
+    final viewInsetsBottom = mediaQuery.viewInsets.bottom;
+    final viewPaddingBottom = mediaQuery.viewPadding.bottom;
+
+    return MediaQuery.removePadding(
+      context: context,
+      removeBottom: true,
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: context.watch<AppBloc>().state.isInSearchMode //
+              ? viewInsetsBottom - viewPaddingBottom
+              : viewPaddingBottom,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, -2),
               ),
             ],
-            currentIndex: selectedIndex,
-            selectedItemColor: Theme.of(context).colorScheme.primary,
-            onTap: onBottomNavigationBarItemTapped,
-          );
-        },
+          ),
+          child: BlocBuilder<AppBloc, AppState>(
+            builder: (context, state) {
+              return BottomNavigationBar(
+                unselectedFontSize: 14,
+                elevation: 0,
+                items: <BottomNavigationBarItem>[
+                  _BottomNavigationBarItemWithSearchResultsCount(
+                    inactiveIconData: Icons.play_circle_outline,
+                    activeIconData: Icons.play_circle,
+                    isInSearchMode: state.isInSearchMode,
+                    searchResultsCount: state.filteredSessionsCount,
+                    labelSingular: 'Talk',
+                    labelPlural: 'Talks',
+                  ),
+                  _BottomNavigationBarItemWithSearchResultsCount(
+                    inactiveIconData: Icons.person_outline,
+                    activeIconData: Icons.person,
+                    isInSearchMode: state.isInSearchMode,
+                    searchResultsCount: state.filteredSpeakersCount,
+                    labelSingular: 'Speaker',
+                    labelPlural: 'Speakers',
+                  ),
+                  _BottomNavigationBarItemWithSearchResultsCount(
+                    inactiveIconData: Icons.favorite_outline_rounded,
+                    activeIconData: Icons.favorite_rounded,
+                    isInSearchMode: state.isInSearchMode,
+                    searchResultsCount: state.filteredFavouriteSessionsCount,
+                    labelSingular: 'Favourite',
+                    labelPlural: 'Favourites',
+                  ),
+                ],
+                currentIndex: selectedIndex,
+                selectedItemColor: Theme.of(context).colorScheme.primary,
+                onTap: onBottomNavigationBarItemTapped,
+              );
+            },
+          ),
+        ),
       ),
     );
   }
