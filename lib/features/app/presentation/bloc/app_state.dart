@@ -115,7 +115,7 @@ class AppState {
 
   List<Speaker> get filteredSpeakers => _speakersFilteredBySearchTerm;
 
-  int get filteredSpeakersCount => _speakersFilteredBySearchTerm.length;
+  int get filteredSpeakersCount => filteredSpeakers.length;
 }
 
 extension _DateTimeExt on DateTime {
