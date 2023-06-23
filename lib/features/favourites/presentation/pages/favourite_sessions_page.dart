@@ -26,7 +26,9 @@ class FavouriteSessionsPage extends StatelessWidget {
             speakers: state.speakers,
             categories: state.categories,
             rooms: state.rooms,
-            emptySessionsMessage: 'No favourite sessions found for this day',
+            emptySessionsMessage: state.isInSearchMode && state.searchTerm.isNotEmpty
+                ? "No favourite sessions found for this day for the search term '${state.searchTerm}'"
+                : 'No favourite sessions found for this day',
           );
         }
       },

@@ -26,7 +26,9 @@ class SessionsPage extends StatelessWidget {
             speakers: state.speakers,
             categories: state.categories,
             rooms: state.rooms,
-            emptySessionsMessage: 'No sessions found for this day',
+            emptySessionsMessage: state.isInSearchMode && state.searchTerm.isNotEmpty
+                ? "No sessions found for this day for the search term '${state.searchTerm}'"
+                : 'No sessions found for this day',
           );
         }
       },
