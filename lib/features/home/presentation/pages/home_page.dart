@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/widgets/conference_app_bar.dart';
+import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/favourites/presentation/pages/favourite_sessions_page.dart';
 import 'package:fluttercon/features/home/presentation/pages/sessions_page.dart';
 import 'package:fluttercon/features/home/presentation/pages/speakers_page.dart';
+import 'package:fluttercon/features/home/presentation/widgets/conference_search_app_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,7 +26,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ConferenceAppBar(),
+      appBar: context.watch<AppBloc>().state.isInSearchMode
+          ? const ConferenceSearchAppBar() as PreferredSizeWidget // Not sure why we need this cast
+          : const ConferenceAppBar(),
       body: Center(
         child: Builder(
           builder: (context) {
@@ -35,6 +40,22 @@ class _HomePageState extends State<HomePage> {
               return const SessionsPage();
             }
           },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: FloatingActionButton(
+          onPressed: () {
+            context.read<AppBloc>().add(SearchButtonPressedEvent());
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: BlocBuilder<AppBloc, AppState>(
+            buildWhen: (previous, current) => previous.isInSearchMode != current.isInSearchMode,
+            builder: (context, state) {
+              return Icon(state.isInSearchMode ? Icons.search_off_rounded : Icons.search_rounded);
+            },
+          ),
         ),
       ),
       bottomNavigationBar: _BottomNavigationBarContent(
