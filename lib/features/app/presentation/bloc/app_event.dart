@@ -7,3 +7,13 @@ class SessionFavouriteIconTappedEvent extends AppEvent {
 
   final String sessionId;
 }
+
+class SearchButtonPressedEvent extends AppEvent {}
+
+class SearchCancelledEvent extends AppEvent {}
+
+class SearchTextChangedEvent extends AppEvent {
+  SearchTextChangedEvent(this.searchTerm);
+
+  final String searchTerm;
+}

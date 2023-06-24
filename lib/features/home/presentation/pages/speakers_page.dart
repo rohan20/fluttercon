@@ -19,8 +19,17 @@ class SpeakersPage extends StatelessWidget {
           return const Center(
             child: Text('Error'),
           );
+        } else if (state.filteredSpeakersCount == 0) {
+          return Center(
+            child: Text(
+              state.isInSearchMode && state.searchTerm.isNotEmpty
+                  ? "No speakers found for the search term '${state.searchTerm}'"
+                  : 'No speakers found',
+              textAlign: TextAlign.center,
+            ),
+          );
         } else {
-          return _SpeakersList(speakers: state.speakers);
+          return _SpeakersList(speakers: state.filteredSpeakers);
         }
       },
     );
