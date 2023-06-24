@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       appBar: context.watch<AppBloc>().state.isInSearchMode
           ? ConferenceSearchAppBar(focusNode: _searchFieldFocusNode) as PreferredSizeWidget
           // ^Not sure why this cast 'as PreferredSizeWidget' is needed
@@ -93,10 +93,7 @@ class _BottomNavigationBarContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-
-    final viewInsetsBottom = mediaQuery.viewInsets.bottom;
-    final viewPaddingBottom = mediaQuery.viewPadding.bottom;
+    final viewInsetsBottom = MediaQuery.of(context).viewInsets.bottom;
 
     return MediaQuery.removePadding(
       context: context,
@@ -104,8 +101,8 @@ class _BottomNavigationBarContent extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(
           bottom: context.watch<AppBloc>().state.isInSearchMode //
-              ? viewInsetsBottom - viewPaddingBottom
-              : viewPaddingBottom,
+              ? viewInsetsBottom
+              : viewInsetsBottom + (MediaQuery.of(context).viewPadding.bottom / 2),
         ),
         child: Container(
           decoration: BoxDecoration(
