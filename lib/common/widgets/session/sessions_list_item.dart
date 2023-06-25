@@ -76,6 +76,7 @@ class _SessionsListItemContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 4),
       padding: padding ?? const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
       color: backgroundColor,
       child: Row(
