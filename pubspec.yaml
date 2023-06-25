@@ -12,6 +12,7 @@ dependencies:
   api_client:
     path: packages/api_client
   cached_network_image: ^3.2.3
+  collection: ^1.17.1
   conference_data:
     path: packages/conference_data
   cupertino_icons: ^1.0.2
