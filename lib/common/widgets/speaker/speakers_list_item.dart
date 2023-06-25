@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercon/common/widgets/tap_to_shrink_effect_gesture_detector.dart';
 import 'package:fluttercon/features/speaker_details/presentation/pages/speaker_details_page.dart';
 
 const _speakerImageRadius = 24.0;
@@ -21,7 +22,7 @@ class SpeakersListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return TapToShrinkEffectGestureDetector(
       onTap: () {
         if (allowTap) {
           Navigator.of(context).push(

@@ -7,6 +7,7 @@ import 'package:fluttercon/common/widgets/session/favourite_session_icon.dart';
 import 'package:fluttercon/common/widgets/session/session_duration.dart';
 import 'package:fluttercon/common/widgets/session/session_format.dart';
 import 'package:fluttercon/common/widgets/session/session_room.dart';
+import 'package:fluttercon/common/widgets/tap_to_shrink_effect_gesture_detector.dart';
 import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/session_details/presentation/pages/session_details_page.dart';
 import 'package:intl/intl.dart';
@@ -29,7 +30,8 @@ class SessionsListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return TapToShrinkEffectGestureDetector(
+      isEffectEnabled: !session.isNotATalk,
       onTap: session.isNotATalk
           ? null
           : () => Navigator.of(context).push(MaterialPageRoute<Widget>(builder: (_) => SessionDetailsPage(session))),
