@@ -29,11 +29,9 @@ class SessionsListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute<Widget>(
-          builder: (_) => SessionDetailsPage(session),
-        ),
-      ),
+      onTap: session.isNotATalk
+          ? null
+          : () => Navigator.of(context).push(MaterialPageRoute<Widget>(builder: (_) => SessionDetailsPage(session))),
       child: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           return _SessionsListItemContent(

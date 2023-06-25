@@ -45,6 +45,8 @@ class Session {
 
   int get duration => endsAt.difference(startsAt).inMinutes;
 
+  bool get isNotATalk => isServiceSession && isPlenumSession;
+
   @override
   String toString() {
     return 'Session(id: $id, title: $title, startsAt: $startsAt, endsAt: $endsAt, description: $description, isServiceSession: $isServiceSession, isPlenumSession: $isPlenumSession, roomId: $roomId, room: $room, speakerIds: $speakerIds, categoryIds: $categoryIds)';
