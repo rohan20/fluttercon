@@ -122,7 +122,9 @@ class _SessionsListItemContent extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                         ),
-                        FavouriteSessionIcon(sessionId: session.id),
+                        if (!session.isNotATalk) ...{
+                          FavouriteSessionIcon(sessionId: session.id),
+                        }
                       ],
                     ),
                     const SizedBox(height: 8),
