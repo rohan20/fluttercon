@@ -108,7 +108,7 @@ class _SessionsListItemContent extends StatelessWidget {
               child: DottedBorder(
                 padding: EdgeInsets.zero,
                 radius: const Radius.circular(8),
-                color: session.isNotATalk ? Colors.grey.shade400 : Colors.transparent,
+                color: session.isNotATalk ? Colors.grey.shade300 : Colors.transparent,
                 strokeCap: StrokeCap.round,
                 borderType: BorderType.RRect,
                 dashPattern: const [14, 10],
@@ -149,7 +149,7 @@ class _SessionsListItemContent extends StatelessWidget {
                                 hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession ?? false,
                               ),
                               const SizedBox(width: 4),
-                              SessionDuration(durationInMinutes: session.duration),
+                              SessionDuration(durationInMinutes: session.duration, isNotATalk: session.isNotATalk),
                             ],
                           ),
                         ],
