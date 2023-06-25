@@ -65,7 +65,7 @@ class SessionDetailsPage extends StatelessWidget {
                   _SessionCategories(
                     categories: List.from(sessionCategories)
                       ..removeWhere(
-                        (category) => category.id == sessionFormatCategory.id,
+                        (category) => category.id == sessionFormatCategory?.id,
                       ),
                   ),
                   const SizedBox(height: 120), // big enough to ensure that the FAB doesn't hide any content below it

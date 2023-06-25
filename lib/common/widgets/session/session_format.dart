@@ -10,24 +10,24 @@ class SessionFormat extends StatelessWidget {
     super.key,
   });
 
-  final Category sessionFormat;
+  final Category? sessionFormat;
   final bool hideSessionFormatIfItIsSession;
 
   @override
   Widget build(BuildContext context) {
-    if (sessionFormat.id == ConferenceMetadata.sessionId && hideSessionFormatIfItIsSession) {
+    if (sessionFormat == null || sessionFormat!.id == ConferenceMetadata.sessionId && hideSessionFormatIfItIsSession) {
       return const SizedBox();
     }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-        color: sessionFormat.id.backgroundColor,
+        color: sessionFormat!.id.backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: sessionFormat.id.sessionFormatBorderColor, width: 0.5),
+        border: Border.all(color: sessionFormat!.id.sessionFormatBorderColor, width: 0.5),
       ),
       child: Text(
-        sessionFormat.name,
+        sessionFormat!.name,
         style: Theme.of(context).textTheme.labelSmall,
       ),
     );

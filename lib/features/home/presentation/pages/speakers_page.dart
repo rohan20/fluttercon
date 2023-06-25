@@ -46,7 +46,7 @@ class _SpeakersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.only(top: 12, bottom: 90),
       itemCount: speakers.length,
       itemBuilder: (BuildContext context, int index) {
         final speaker = speakers[index];

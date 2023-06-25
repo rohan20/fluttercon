@@ -1,4 +1,5 @@
 import 'package:conference_data/conference_data.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/extensions/session_extensions.dart';
@@ -29,11 +30,9 @@ class SessionsListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute<Widget>(
-          builder: (_) => SessionDetailsPage(session),
-        ),
-      ),
+      onTap: session.isNotATalk
+          ? null
+          : () => Navigator.of(context).push(MaterialPageRoute<Widget>(builder: (_) => SessionDetailsPage(session))),
       child: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           return _SessionsListItemContent(
@@ -68,7 +67,7 @@ class _SessionsListItemContent extends StatelessWidget {
 
   final Session session;
   final List<Speaker> speakers;
-  final Category sessionFormat;
+  final Category? sessionFormat;
   final String roomName;
   final Color backgroundColor;
   final SessionTimeVisibility sessionTimeVisibility;
@@ -78,6 +77,7 @@ class _SessionsListItemContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 8),
       padding: padding ?? const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
       color: backgroundColor,
       child: Row(
@@ -104,48 +104,58 @@ class _SessionsListItemContent extends StatelessWidget {
             child: Material(
               elevation: 4,
               borderRadius: BorderRadius.circular(8),
-              shadowColor: sessionFormat.id.sessionFormatBorderColor.withOpacity(0.6),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            session.title.trim(),
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                        ),
-                        FavouriteSessionIcon(sessionId: session.id),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      speakers.map((speaker) => speaker.fullName).join(', '),
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SessionRoom(roomName: roomName),
-                        const SizedBox(width: 4),
-                        Row(
-                          children: [
-                            SessionFormat(
-                              sessionFormat: sessionFormat,
-                              hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession ?? false,
+              shadowColor: sessionFormat?.id.sessionFormatBorderColor.withOpacity(0.6) ?? Colors.transparent,
+              child: DottedBorder(
+                padding: EdgeInsets.zero,
+                radius: const Radius.circular(8),
+                color: session.isNotATalk ? Colors.grey.shade300 : Colors.transparent,
+                strokeCap: StrokeCap.round,
+                borderType: BorderType.RRect,
+                dashPattern: const [14, 10],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              session.title.trim(),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
-                            const SizedBox(width: 4),
-                            SessionDuration(durationInMinutes: session.duration),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                          ),
+                          if (!session.isNotATalk) ...{
+                            FavouriteSessionIcon(sessionId: session.id),
+                          }
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        speakers.map((speaker) => speaker.fullName).join(', '),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SessionRoom(roomName: roomName),
+                          const SizedBox(width: 4),
+                          Row(
+                            children: [
+                              SessionFormat(
+                                sessionFormat: sessionFormat,
+                                hideSessionFormatIfItIsSession: hideSessionFormatIfItIsSession ?? false,
+                              ),
+                              const SizedBox(width: 4),
+                              SessionDuration(durationInMinutes: session.duration, isNotATalk: session.isNotATalk),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

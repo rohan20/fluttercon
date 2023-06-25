@@ -39,6 +39,15 @@ class ConferenceData {
   final List<Category> categories;
   final List<Room> rooms;
 
+  ConferenceData copyWith({List<Session>? sessions}) {
+    return ConferenceData(
+      sessions: sessions ?? this.sessions,
+      speakers: speakers,
+      categories: categories,
+      rooms: rooms,
+    );
+  }
+
   @override
   String toString() {
     return 'ConferenceData(sessions: $sessions, speakers: $speakers, categories: $categories, rooms: $rooms)';

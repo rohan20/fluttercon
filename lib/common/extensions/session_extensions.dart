@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
@@ -15,9 +16,9 @@ extension SessionExt on Session {
     return rooms.firstWhere((room) => room.id == roomId);
   }
 
-  Category getSessionFormatCategory({required List<Category> categories}) {
-    return categories.firstWhere((category) {
-      final isCategoryTypeSessionFormat = category.typeId == '48321';
+  Category? getSessionFormatCategory({required List<Category> categories}) {
+    return categories.firstWhereOrNull((category) {
+      final isCategoryTypeSessionFormat = category.typeId == ConferenceMetadata.categoryTypeSessionFormatId;
 
       return isCategoryTypeSessionFormat && categoryIds.contains(category.id);
     });
