@@ -137,7 +137,7 @@ class _SessionsList extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.only(top: 12, bottom: 90),
       itemCount: sessions.length,
       itemBuilder: (BuildContext context, int index) {
         final session = sessions[index];
