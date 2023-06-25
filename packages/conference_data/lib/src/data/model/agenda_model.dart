@@ -12,14 +12,14 @@ class AgendaModel {
         .expand((roomJson) => (roomJson as Map<String, dynamic>)['sessions'] as List<dynamic>)
         .map<SessionModel>(
       (sessionJson) {
-        final categoryItemJsonList = ((sessionJson as Map<String, dynamic>)['categories'] as List<dynamic>)
+        final categoryItemsJsonList = ((sessionJson as Map<String, dynamic>)['categories'] as List<dynamic>)
             .map((categoryJson) => categoryJson as Map<String, dynamic>)
             .expand((categoryJson) => categoryJson['categoryItems'] as List<dynamic>)
             .map((categoryItemJson) => (categoryItemJson as Map<String, dynamic>)['id'])
             .toList();
 
         sessionJson
-          ..putIfAbsent('categoryItems', () => categoryItemJsonList)
+          ..putIfAbsent('categoryItems', () => categoryItemsJsonList)
           ..remove('categories');
 
         return SessionModel.fromJson(sessionJson);
