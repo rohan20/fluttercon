@@ -10,4 +10,6 @@ class ConferenceMetadata {
   static const String workshopId = '164902';
   static const String keynoteId = '164908';
   static const String panelDiscussionId = '164907';
+
+  static const String categoryTypeSessionFormatId = '48321';
 }

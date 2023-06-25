@@ -68,7 +68,7 @@ class _SessionsListItemContent extends StatelessWidget {
 
   final Session session;
   final List<Speaker> speakers;
-  final Category sessionFormat;
+  final Category? sessionFormat;
   final String roomName;
   final Color backgroundColor;
   final SessionTimeVisibility sessionTimeVisibility;
@@ -104,7 +104,7 @@ class _SessionsListItemContent extends StatelessWidget {
             child: Material(
               elevation: 4,
               borderRadius: BorderRadius.circular(8),
-              shadowColor: sessionFormat.id.sessionFormatBorderColor.withOpacity(0.6),
+              shadowColor: sessionFormat?.id.sessionFormatBorderColor.withOpacity(0.6) ?? Colors.transparent,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                 child: Column(
