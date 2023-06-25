@@ -59,7 +59,7 @@ class SpeakerDetailsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 16),
-                      Text('Talks:', style: Theme.of(context).textTheme.bodyMedium),
+                      Text('Sessions:', style: Theme.of(context).textTheme.bodyMedium),
                       const SizedBox(height: 12),
                       for (final session in speakerSessions) ...{
                         SessionsListItem(

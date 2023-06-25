@@ -125,8 +125,8 @@ class _BottomNavigationBarContent extends StatelessWidget {
                     activeIconData: Icons.play_circle,
                     isInSearchMode: state.isInSearchMode,
                     searchResultsCount: state.filteredSessionsCount,
-                    labelSingular: 'Talk',
-                    labelPlural: 'Talks',
+                    labelSingular: 'Session',
+                    labelPlural: 'Sessions',
                   ),
                   _BottomNavigationBarItemWithSearchResultsCount(
                     inactiveIconData: Icons.person_outline,
