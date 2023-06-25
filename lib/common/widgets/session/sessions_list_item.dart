@@ -104,8 +104,12 @@ class _SessionsListItemContent extends StatelessWidget {
               elevation: 4,
               borderRadius: BorderRadius.circular(8),
               shadowColor: sessionFormat?.id.sessionFormatBorderColor.withOpacity(0.6) ?? Colors.transparent,
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: session.isNotATalk ? Border.all(width: 0.1) : null,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
