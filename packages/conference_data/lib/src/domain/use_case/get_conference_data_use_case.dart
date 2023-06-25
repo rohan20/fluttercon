@@ -1,4 +1,5 @@
 import 'package:conference_data/src/di/injector.dart';
+import 'package:conference_data/src/domain/entity/agenda.dart';
 import 'package:conference_data/src/domain/entity/conference_data.dart';
 import 'package:conference_data/src/domain/entity/session.dart';
 import 'package:conference_data/src/domain/repository/conference_data_repository.dart';
@@ -11,9 +12,15 @@ class GetConferenceDataUseCase extends UseCase<ConferenceData, NoParams> {
   Future<Result<Failure, ConferenceData>> call([NoParams? params]) async {
     final conferenceDataRepository = injector.get<ConferenceDataRepository>();
 
-    // TODO(rohan20): Parallelize these calls
-    final conferenceDataResult = await conferenceDataRepository.getConferenceData();
-    final agendaResult = await conferenceDataRepository.getAgenda();
+    final conferenceDataAndAgendaResults = await Future.wait(
+      [
+        conferenceDataRepository.getConferenceData(),
+        conferenceDataRepository.getAgenda(),
+      ],
+    );
+
+    final conferenceDataResult = conferenceDataAndAgendaResults[0] as Result<Failure, ConferenceData>;
+    final agendaResult = conferenceDataAndAgendaResults[1] as Result<Failure, Agenda>;
 
     if (conferenceDataResult.isError()) {
       return Error(conferenceDataResult.getError()!);
