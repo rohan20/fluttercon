@@ -12,13 +12,19 @@ class AgendaModel {
         .expand((roomJson) => (roomJson as Map<String, dynamic>)['sessions'] as List<dynamic>)
         .map<SessionModel>(
       (sessionJson) {
-        final categoryItemsJsonList = ((sessionJson as Map<String, dynamic>)['categories'] as List<dynamic>)
+        final speakerIdsJsonList = ((sessionJson as Map<String, dynamic>)['speakers'] as List<dynamic>)
+            .map((speakerJson) => (speakerJson as Map<String, dynamic>)['id'])
+            .toList();
+
+        final categoryItemsJsonList = (sessionJson['categories'] as List<dynamic>)
             .map((categoryJson) => categoryJson as Map<String, dynamic>)
             .expand((categoryJson) => categoryJson['categoryItems'] as List<dynamic>)
             .map((categoryItemJson) => (categoryItemJson as Map<String, dynamic>)['id'])
             .toList();
 
         sessionJson
+          ..remove('speakers')
+          ..putIfAbsent('speakers', () => speakerIdsJsonList)
           ..putIfAbsent('categoryItems', () => categoryItemsJsonList)
           ..remove('categories');
 
