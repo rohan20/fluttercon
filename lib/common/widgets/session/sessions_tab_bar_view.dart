@@ -76,9 +76,27 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
             return TabBar(
               controller: _tabController,
               tabs: [
-                Tab(text: tabDateFormat.format(ConferenceMetadata.day1)),
-                Tab(text: tabDateFormat.format(ConferenceMetadata.day2)),
-                Tab(text: tabDateFormat.format(ConferenceMetadata.day3)),
+                Tab(
+                  text: _getTabText(
+                    dateText: tabDateFormat.format(ConferenceMetadata.day1),
+                    sessionsCount: widget.day1SessionsSortedByStartTime.length,
+                    isSearchMode: isSearchMode,
+                  ),
+                ),
+                Tab(
+                  text: _getTabText(
+                    dateText: tabDateFormat.format(ConferenceMetadata.day2),
+                    sessionsCount: widget.day2SessionsSortedByStartTime.length,
+                    isSearchMode: isSearchMode,
+                  ),
+                ),
+                Tab(
+                  text: _getTabText(
+                    dateText: tabDateFormat.format(ConferenceMetadata.day3),
+                    sessionsCount: widget.day3SessionsSortedByStartTime.length,
+                    isSearchMode: isSearchMode,
+                  ),
+                ),
               ],
             );
           },
