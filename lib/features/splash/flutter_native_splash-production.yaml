@@ -1,0 +1,14 @@
+flutter_native_splash:
+  # background_image generated via: https://angrytools.com/gradient/image/
+  background_image: assets/images/splash_background.png
+  image: assets/images/logo.png
+
+  android_12:
+    # background_image doesn't work with Android 12, hence a background color is being used:
+    # https://pub.dev/packages/flutter_native_splash#android-12-support
+    color: "#8ad7fc"
+
+  web: false
+
+  android_gravity: center
+  ios_content_mode: center
