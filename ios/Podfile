@@ -4,10 +4,19 @@
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
+# Flutter flavors documentation bug: https://docs.flutter.dev/deployment/flavors#plugin-configurations
+# As per the documentation, this should be:
+# project 'Runner', {
+#   'Debug-Production' => :debug,
+#   'Profile-Production' => :release,
+#   'Release-Production' => :release,
+# }
+#
+# However, that doesn't work. The following (which is the default when a new Flutter project is created) does:
 project 'Runner', {
-  'Debug-Production' => :debug,
-  'Profile-Production' => :release,
-  'Release-Production' => :release,
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
 }
 
 def flutter_root
