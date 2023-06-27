@@ -63,13 +63,23 @@ android {
         }
     }
 
+    flavorDimensions "app"
+
+    productFlavors {
+        production {
+            dimension "app"
+            resValue "string", "app_name", "Fluttercon"
+            applicationId "com.rohantaneja.fluttercon"
+        }
+    }
+
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            productFlavors.production.signingConfig signingConfigs.debug
         }
 
         release {
-            signingConfig signingConfigs.release
+            productFlavors.production.signingConfig signingConfigs.release
         }
     }
 }
