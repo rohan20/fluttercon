@@ -32,6 +32,7 @@ class SessionsTabBarView extends StatefulWidget {
 
 class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTickerProviderStateMixin {
   static const tabDateDisplayFormat = 'EEE, dd MMM';
+  static const tabDateDisplayFormatInSearchMode = 'EEE';
 
   late final TabController _tabController;
 
@@ -68,7 +69,9 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
         BlocBuilder<AppBloc, AppState>(
           buildWhen: (previous, current) => previous.isInSearchMode != current.isInSearchMode,
           builder: (context, state) {
-            final tabDateFormat = DateFormat(tabDateDisplayFormat);
+            final isSearchMode = state.isInSearchMode;
+
+            final tabDateFormat = DateFormat(isSearchMode ? tabDateDisplayFormatInSearchMode : tabDateDisplayFormat);
 
             return TabBar(
               controller: _tabController,
