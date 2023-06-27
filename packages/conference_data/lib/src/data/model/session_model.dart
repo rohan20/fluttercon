@@ -6,6 +6,10 @@ class SessionModel {
     required String endsAt,
     String? description,
     bool? isServiceSession,
+    // 'Plenum' definition: an assembly of all the members of a group or committee.
+    // If true, this usually implies a session that requires all attendees to be present which automatically implies that
+    // no other session is happening at the same time. For example, the 'Keynote' session or the 'Lunch' session or
+    // the 'Registration & Check-in' session.
     bool? isPlenumSession,
     List<dynamic>? speakerIds,
     List<dynamic>? categoryIds,

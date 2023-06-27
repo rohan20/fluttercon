@@ -45,7 +45,7 @@ class Session {
 
   int get duration => endsAt.difference(startsAt).inMinutes;
 
-  bool get isNotATalk => isServiceSession && isPlenumSession;
+  bool get isNotATalk => isServiceSession;
 
   @override
   String toString() {
