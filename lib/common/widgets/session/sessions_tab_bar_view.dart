@@ -1,6 +1,8 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/widgets/session/sessions_list_item.dart';
+import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 import 'package:intl/intl.dart';
 
@@ -30,6 +32,7 @@ class SessionsTabBarView extends StatefulWidget {
 
 class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTickerProviderStateMixin {
   static const tabDateDisplayFormat = 'EEE, dd MMM';
+  static const tabDateDisplayFormatInSearchMode = 'EEE';
 
   late final TabController _tabController;
 
@@ -61,17 +64,42 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    final tabDateFormat = DateFormat(tabDateDisplayFormat);
-
     return Column(
       children: [
-        TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: tabDateFormat.format(ConferenceMetadata.day1)),
-            Tab(text: tabDateFormat.format(ConferenceMetadata.day2)),
-            Tab(text: tabDateFormat.format(ConferenceMetadata.day3)),
-          ],
+        BlocBuilder<AppBloc, AppState>(
+          buildWhen: (previous, current) => previous.isInSearchMode != current.isInSearchMode,
+          builder: (context, state) {
+            final isSearchMode = state.isInSearchMode;
+
+            final tabDateFormat = DateFormat(isSearchMode ? tabDateDisplayFormatInSearchMode : tabDateDisplayFormat);
+
+            return TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(
+                  text: _getTabText(
+                    dateText: tabDateFormat.format(ConferenceMetadata.day1),
+                    sessionsCount: widget.day1SessionsSortedByStartTime.length,
+                    isSearchMode: isSearchMode,
+                  ),
+                ),
+                Tab(
+                  text: _getTabText(
+                    dateText: tabDateFormat.format(ConferenceMetadata.day2),
+                    sessionsCount: widget.day2SessionsSortedByStartTime.length,
+                    isSearchMode: isSearchMode,
+                  ),
+                ),
+                Tab(
+                  text: _getTabText(
+                    dateText: tabDateFormat.format(ConferenceMetadata.day3),
+                    sessionsCount: widget.day3SessionsSortedByStartTime.length,
+                    isSearchMode: isSearchMode,
+                  ),
+                ),
+              ],
+            );
+          },
         ),
         Expanded(
           child: TabBarView(
@@ -103,6 +131,11 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
         ),
       ],
     );
+  }
+
+  /// Example: 'Wed, 05 Jul (35)' in search mode, otherwise 'Wed, 05 Jul'.
+  String _getTabText({required String dateText, required int sessionsCount, required bool isSearchMode}) {
+    return isSearchMode ? '$dateText ($sessionsCount)' : dateText;
   }
 }
 
