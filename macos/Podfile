@@ -3,10 +3,13 @@ platform :osx, '10.14'
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
+# Issue: https://github.com/flutter/flutter/issues/122684
+# Temporary fix (used currently below): https://github.com/flutter/flutter/issues/122684#issuecomment-1568139743
+# Permanent fix (not yet released): https://github.com/flutter/flutter/pull/127997
 project 'Runner', {
-  'Debug-Production' => :debug,
-  'Profile-Production' => :release,
-  'Release-Production' => :release,
+  'Debug Production' => :debug,
+  'Profile Production' => :release,
+  'Release Production' => :release,
 }
 
 def flutter_root
