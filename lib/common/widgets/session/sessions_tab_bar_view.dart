@@ -104,6 +104,11 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
       ],
     );
   }
+
+  /// Example: 'Wed, 05 Jul (35)' in search mode, otherwise 'Wed, 05 Jul'.
+  String _getTabText({required String dateText, required int sessionsCount, required bool isSearchMode}) {
+    return isSearchMode ? '$dateText ($sessionsCount)' : dateText;
+  }
 }
 
 class _SessionsList extends StatelessWidget {
