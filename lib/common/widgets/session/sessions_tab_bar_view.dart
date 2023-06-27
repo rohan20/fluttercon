@@ -1,6 +1,8 @@
 import 'package:conference_data/conference_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttercon/common/widgets/session/sessions_list_item.dart';
+import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 import 'package:fluttercon/features/home/presentation/conference_metadata.dart';
 import 'package:intl/intl.dart';
 
@@ -61,17 +63,22 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    final tabDateFormat = DateFormat(tabDateDisplayFormat);
-
     return Column(
       children: [
-        TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: tabDateFormat.format(ConferenceMetadata.day1)),
-            Tab(text: tabDateFormat.format(ConferenceMetadata.day2)),
-            Tab(text: tabDateFormat.format(ConferenceMetadata.day3)),
-          ],
+        BlocBuilder<AppBloc, AppState>(
+          buildWhen: (previous, current) => previous.isInSearchMode != current.isInSearchMode,
+          builder: (context, state) {
+            final tabDateFormat = DateFormat(tabDateDisplayFormat);
+
+            return TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(text: tabDateFormat.format(ConferenceMetadata.day1)),
+                Tab(text: tabDateFormat.format(ConferenceMetadata.day2)),
+                Tab(text: tabDateFormat.format(ConferenceMetadata.day3)),
+              ],
+            );
+          },
         ),
         Expanded(
           child: TabBarView(
