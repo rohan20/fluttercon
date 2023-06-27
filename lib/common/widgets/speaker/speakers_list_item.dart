@@ -23,6 +23,7 @@ class SpeakersListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TapToShrinkEffectGestureDetector(
+      isEffectEnabled: allowTap,
       onTap: () {
         if (allowTap) {
           Navigator.of(context).push(
