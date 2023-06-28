@@ -10,6 +10,7 @@ dependencies:
   api_client:
     path: ../api_client
   get_it: ^7.6.0
+  shared_preferences: ^2.1.2
   util:
     path: ../util
 
