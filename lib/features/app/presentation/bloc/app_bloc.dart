@@ -18,9 +18,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   FutureOr<void> _onAppLaunchedEvent(event, Emitter<AppState> emit) async {
+    await _getConferenceDataAndEmitState(emit: emit);
+  }
+
+  Future<void> _getConferenceDataAndEmitState({
+    required Emitter<AppState> emit,
+    bool? forceLatestData,
+  }) async {
     emit(state.copyWith(isLoading: true));
 
-    final conferenceDataResult = await injector.get<GetConferenceDataUseCase>().call();
+    final conferenceDataResult = await injector.get<GetConferenceDataUseCase>().call(forceLatestData);
 
     if (conferenceDataResult.isError()) {
       emit(state.copyWith(isLoading: false, isError: true));
