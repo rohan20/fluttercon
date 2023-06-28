@@ -1,20 +1,24 @@
 import 'package:conference_data/src/di/injector.dart';
+import 'package:conference_data/src/domain/conference_data_source.dart';
 import 'package:conference_data/src/domain/entity/agenda.dart';
 import 'package:conference_data/src/domain/entity/conference_data.dart';
 import 'package:conference_data/src/domain/entity/session.dart';
 import 'package:conference_data/src/domain/repository/conference_data_repository.dart';
 import 'package:util/util.dart';
 
-class GetConferenceDataUseCase extends UseCase<ConferenceData, NoParams> {
+class GetConferenceDataUseCase extends UseCase<ConferenceData, bool> {
   GetConferenceDataUseCase();
 
   @override
-  Future<Result<Failure, ConferenceData>> call([NoParams? params]) async {
+  // ignore: avoid_renaming_method_parameters
+  Future<Result<Failure, ConferenceData>> call([bool? forceLatest]) async {
     final conferenceDataRepository = injector.get<ConferenceDataRepository>();
 
     final conferenceDataAndAgendaResults = await Future.wait(
       [
-        conferenceDataRepository.getConferenceData(),
+        conferenceDataRepository.getConferenceData(
+          source: (forceLatest ?? false) ? ConferenceDataSource.latest : null,
+        ),
         conferenceDataRepository.getAgenda(),
       ],
     );
