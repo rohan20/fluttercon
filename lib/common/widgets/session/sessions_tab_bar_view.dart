@@ -169,23 +169,27 @@ class _SessionsList extends StatelessWidget {
       );
     }
 
-    return ListView.builder(
-      padding: const EdgeInsets.only(top: 12, bottom: 90),
-      itemCount: sessions.length,
-      itemBuilder: (BuildContext context, int index) {
-        final session = sessions[index];
+    // TODO(rohan20): RefreshIndicator should also work on empty state.
+    return RefreshIndicator(
+      onRefresh: () async => context.read<AppBloc>().add(PullToRefreshSessionsListEvent()),
+      child: ListView.builder(
+        padding: const EdgeInsets.only(top: 12, bottom: 90),
+        itemCount: sessions.length,
+        itemBuilder: (BuildContext context, int index) {
+          final session = sessions[index];
 
-        final startsAtSameTimeAsPreviousSession = index > 0 && sessions[index - 1].startsAt == session.startsAt;
+          final startsAtSameTimeAsPreviousSession = index > 0 && sessions[index - 1].startsAt == session.startsAt;
 
-        return SessionsListItem(
-          session: session,
-          sessionTimeVisibility: startsAtSameTimeAsPreviousSession //
-              ? SessionTimeVisibility.invisible
-              : SessionTimeVisibility.visible,
-          backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
-          hideSessionFormatIfItIsSession: true,
-        );
-      },
+          return SessionsListItem(
+            session: session,
+            sessionTimeVisibility: startsAtSameTimeAsPreviousSession //
+                ? SessionTimeVisibility.invisible
+                : SessionTimeVisibility.visible,
+            backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
+            hideSessionFormatIfItIsSession: true,
+          );
+        },
+      ),
     );
   }
 }
