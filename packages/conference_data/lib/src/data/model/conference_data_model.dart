@@ -38,6 +38,15 @@ class ConferenceDataModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'sessions': sessions.map((session) => session.toJson()).toList(),
+      'speakers': speakers.map((speaker) => speaker.toJson()).toList(),
+      'categories': categoryParents.map((categoryParent) => categoryParent.toJson()).toList(),
+      'rooms': rooms.map((room) => room.toJson()).toList(),
+    };
+  }
+
   final List<SessionModel> sessions;
   final List<SpeakerModel> speakers;
   final List<CategoryParentModel> categoryParents;

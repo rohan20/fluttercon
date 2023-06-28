@@ -6,6 +6,14 @@ class CategoryParentModel {
         _title = json['title'] as String,
         _categories = json['items'] as List<dynamic>;
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': _id,
+      'title': _title,
+      'items': _categories,
+    };
+  }
+
   final int _id;
   final String _title;
   final List<dynamic> _categories;

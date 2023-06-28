@@ -37,6 +37,12 @@ class AgendaModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'sessions': sessions.map((session) => session.toJson()).toList(),
+    };
+  }
+
   final List<SessionModel> sessions;
 
   @override
