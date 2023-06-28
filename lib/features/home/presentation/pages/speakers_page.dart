@@ -19,17 +19,13 @@ class SpeakersPage extends StatelessWidget {
           return const Center(
             child: Text('Error'),
           );
-        } else if (state.filteredSpeakersCount == 0) {
-          return Center(
-            child: Text(
-              state.isInSearchMode && state.searchTerm.isNotEmpty
-                  ? "No speakers found for the search term '${state.searchTerm}'"
-                  : 'No speakers found',
-              textAlign: TextAlign.center,
-            ),
-          );
         } else {
-          return _SpeakersList(speakers: state.filteredSpeakers);
+          return _SpeakersList(
+            speakers: state.filteredSpeakers,
+            emptySpeakersMessage: state.isInSearchMode && state.searchTerm.isNotEmpty
+                ? "No speakers found for the search term '${state.searchTerm}'"
+                : 'No speakers found',
+          );
         }
       },
     );
@@ -39,12 +35,18 @@ class SpeakersPage extends StatelessWidget {
 class _SpeakersList extends StatelessWidget {
   const _SpeakersList({
     required this.speakers,
+    required this.emptySpeakersMessage,
   });
 
   final List<Speaker> speakers;
+  final String emptySpeakersMessage;
 
   @override
   Widget build(BuildContext context) {
+    if (speakers.isEmpty) {
+      return Center(child: Text(emptySpeakersMessage, textAlign: TextAlign.center));
+    }
+
     // TODO(rohan20): RefreshIndicator should also work on empty state.
     return RefreshIndicator(
       onRefresh: () async => context.read<AppBloc>().add(PullToRefreshSpeakersListEvent()),
