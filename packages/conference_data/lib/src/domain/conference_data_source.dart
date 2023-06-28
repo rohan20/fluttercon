@@ -1,0 +1,4 @@
+enum ConferenceDataSource {
+  cached,
+  latest,
+}
