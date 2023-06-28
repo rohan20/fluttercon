@@ -25,7 +25,7 @@ class Injector {
 }
 
 Future<void> initDependencies() async {
-  ConferenceData.init();
+  await ConferenceData.init();
 
   injector.registerFactory<GetConferenceDataUseCase>(GetConferenceDataUseCase.new);
 
