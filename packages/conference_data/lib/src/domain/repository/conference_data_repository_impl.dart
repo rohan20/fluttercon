@@ -17,14 +17,17 @@ class ConferenceDataRepositoryImpl implements ConferenceDataRepository {
   final ConferenceDataLocalDataSource conferenceDataLocalDataSource;
 
   // TODO(rohan20): Simplify with just a single try-catch that uses private exceptions which are rethrown.
+  // TODO(rohan20): Apply caching same logic to getAgenda() too.
   // TODO(rohan20): Remove print statements.
   @override
   Future<Result<Failure, ConferenceData>> getConferenceData({
-    ConferenceDataSource source = ConferenceDataSource.cached,
+    ConferenceDataSource? source = ConferenceDataSource.cached,
   }) async {
     try {
+      final sourceOrFallbackSource = source ?? ConferenceDataSource.cached;
+
       try {
-        if (source == ConferenceDataSource.cached) {
+        if (sourceOrFallbackSource == ConferenceDataSource.cached) {
           print('XXX Getting cached conference data...');
           final cachedConferenceDataModel = await conferenceDataLocalDataSource.getConferenceData();
 
