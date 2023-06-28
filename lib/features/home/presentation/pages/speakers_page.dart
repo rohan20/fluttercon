@@ -43,25 +43,28 @@ class _SpeakersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (speakers.isEmpty) {
-      return Center(child: Text(emptySpeakersMessage, textAlign: TextAlign.center));
-    }
-
-    // TODO(rohan20): RefreshIndicator should also work on empty state.
     return RefreshIndicator(
       onRefresh: () async => context.read<AppBloc>().add(PullToRefreshSpeakersListEvent()),
-      child: ListView.builder(
-        padding: const EdgeInsets.only(top: 12, bottom: 90),
-        itemCount: speakers.length,
-        itemBuilder: (BuildContext context, int index) {
-          final speaker = speakers[index];
+      child: speakers.isEmpty
+          ? CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  child: Center(child: Text(emptySpeakersMessage, textAlign: TextAlign.center)),
+                ),
+              ],
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.only(top: 12, bottom: 90),
+              itemCount: speakers.length,
+              itemBuilder: (BuildContext context, int index) {
+                final speaker = speakers[index];
 
-          return SpeakersListItem(
-            speaker: speaker,
-            backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
-          );
-        },
-      ),
+                return SpeakersListItem(
+                  speaker: speaker,
+                  backgroundColor: index.isEven ? Colors.transparent : Colors.grey.shade50,
+                );
+              },
+            ),
     );
   }
 }
