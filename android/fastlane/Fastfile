@@ -10,11 +10,12 @@ platform :android do
   end
 
   desc "Build App"
-  private_lane :build_app do
+  private_lane :build_app do |options|
     cleanup
     gradle(task: "clean", print_command: true)
     gradle(
       task: "bundle",
+      flavor: get_flavor(options[:app_id]),
       build_type: "Release",
       print_command: true
     )
@@ -22,13 +23,24 @@ platform :android do
 
   desc "Upload Production App to Google Play Store"
   lane :upload_production do
+    flavor = "production"
+
     build_app(app_id: APP_ID_PRODUCTION, should_build_app_bundle: true)
     upload_to_play_store(
       track: "internal",
       package_name: APP_ID_PRODUCTION,
       json_key: "./fastlane/service_account.json",
-      aab: "../build/app/outputs/bundle/Release/app-release.aab",
+      aab: "../build/app/outputs/bundle/#{flavor}Release/app-#{flavor}-release.aab",
     )
+  end
+
+  def get_flavor(app_id)
+    case (app_id)
+    when APP_ID_PRODUCTION
+      return "production"
+    else
+      UI.crash!("Flavor " + app_id + " seems to be invalid. Please check again.")
+    end
   end
 
 end
