@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttercon/common/widgets/error_message_widget.dart';
 import 'package:fluttercon/common/widgets/session/sessions_tab_bar_view.dart';
 import 'package:fluttercon/features/app/presentation/bloc/bloc.dart';
 
@@ -15,8 +16,8 @@ class SessionsPage extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state.isError) {
-          return const Center(
-            child: Text('Error'),
+          return ErrorMessageWidget(
+            onRefresh: () async => context.read<AppBloc>().add(PullToRefreshSessionsListEvent()),
           );
         } else {
           return SessionsTabBarView(
