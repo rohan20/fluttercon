@@ -15,12 +15,21 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<SearchButtonPressedEvent>(_onSearchButtonPressedEvent);
     on<SearchCancelledEvent>(_onSearchCancelledEvent);
     on<SearchTextChangedEvent>(_onSearchTextChangedEvent);
+    on<PullToRefreshSessionsListEvent>(_onPullToRefreshSessionsListEvent);
+    on<PullToRefreshSpeakersListEvent>(_onPullToRefreshSpeakersListEvent);
   }
 
   FutureOr<void> _onAppLaunchedEvent(event, Emitter<AppState> emit) async {
+    await _getConferenceDataAndEmitState(emit: emit);
+  }
+
+  Future<void> _getConferenceDataAndEmitState({
+    required Emitter<AppState> emit,
+    bool? forceLatestData,
+  }) async {
     emit(state.copyWith(isLoading: true));
 
-    final conferenceDataResult = await injector.get<GetConferenceDataUseCase>().call();
+    final conferenceDataResult = await injector.get<GetConferenceDataUseCase>().call(forceLatestData);
 
     if (conferenceDataResult.isError()) {
       emit(state.copyWith(isLoading: false, isError: true));
@@ -89,5 +98,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   FutureOr<void> _onSearchTextChangedEvent(SearchTextChangedEvent event, Emitter<AppState> emit) {
     emit(state.copyWith(searchTerm: event.searchTerm));
+  }
+
+  FutureOr<void> _onPullToRefreshSessionsListEvent(_, Emitter<AppState> emit) async {
+    await _getConferenceDataAndEmitState(emit: emit, forceLatestData: true);
+  }
+
+  FutureOr<void> _onPullToRefreshSpeakersListEvent(_, Emitter<AppState> emit) async {
+    await _getConferenceDataAndEmitState(emit: emit, forceLatestData: true);
   }
 }

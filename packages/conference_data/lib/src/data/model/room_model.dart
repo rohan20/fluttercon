@@ -3,6 +3,13 @@ class RoomModel {
       : _id = json['id'] as int,
         _name = json['name'] as String;
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': _id,
+      'name': _name,
+    };
+  }
+
   final int _id;
   final String _name;
 

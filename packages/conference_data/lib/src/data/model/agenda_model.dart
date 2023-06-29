@@ -37,6 +37,22 @@ class AgendaModel {
     );
   }
 
+  factory AgendaModel.fromLocalJson(Map<String, dynamic> json) {
+    return AgendaModel(
+      sessions: json['sessions'] != null
+          ? (json['sessions'] as List<dynamic>)
+              .map<SessionModel>((sessionJson) => SessionModel.fromJson(sessionJson as Map<String, dynamic>))
+              .toList()
+          : [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'sessions': sessions.map((session) => session.toJson()).toList(),
+    };
+  }
+
   final List<SessionModel> sessions;
 
   @override

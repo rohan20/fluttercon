@@ -43,6 +43,22 @@ class SessionModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': _id,
+      'title': _title,
+      'startsAt': _startsAt,
+      'endsAt': _endsAt,
+      'description': _description,
+      'isServiceSession': _isServiceSession,
+      'isPlenumSession': _isPlenumSession,
+      'speakers': _speakerIds,
+      'categoryItems': _categoryIds,
+      'roomId': _roomId,
+      'room': _room,
+    };
+  }
+
   String _id;
   String _title;
   String _startsAt;

@@ -2,6 +2,7 @@
 library conference_data;
 
 export 'src/conference_data.dart';
+export 'src/domain/conference_data_source.dart';
 export 'src/domain/entity/category.dart';
 export 'src/domain/entity/link.dart';
 export 'src/domain/entity/room.dart';

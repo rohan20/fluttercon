@@ -17,3 +17,7 @@ class SearchTextChangedEvent extends AppEvent {
 
   final String searchTerm;
 }
+
+class PullToRefreshSessionsListEvent extends AppEvent {}
+
+class PullToRefreshSpeakersListEvent extends AppEvent {}

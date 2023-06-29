@@ -29,6 +29,18 @@ class SpeakerModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': _id,
+      'fullName': _fullName,
+      'bio': _bio,
+      'tagLine': _tagLine,
+      'profilePicture': _profilePictureUrl,
+      'sessions': _sessionIds,
+      'links': _links,
+    };
+  }
+
   String _id;
   String _fullName;
   String? _bio;
