@@ -32,7 +32,7 @@ class ConferenceDataRepositoryImpl implements ConferenceDataRepository {
           final cachedConferenceDataModel = await conferenceDataLocalDataSource.getConferenceData();
 
           if (cachedConferenceDataModel.sessions.isNotEmpty) {
-            print('XXX Returning latest conference data because source = cached');
+            print('XXX Returning cached conference data because source = cached');
             return Success(ConferenceData.fromConferenceDataModel(cachedConferenceDataModel));
           } else {
             print('XXX Returning latest conference data because cached sessions were empty');
