@@ -55,7 +55,7 @@ class ConferenceDataLocalDataSourceImpl implements ConferenceDataLocalDataSource
         return AgendaModel();
       }
 
-      return AgendaModel.fromJson(jsonDecode(agendaJson) as List<dynamic>);
+      return AgendaModel.fromLocalJson(jsonDecode(agendaJson) as Map<String, dynamic>);
     } catch (e) {
       throw Exception(e);
     }
