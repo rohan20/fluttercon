@@ -28,7 +28,7 @@ class ConferenceDataLocalDataSourceImpl implements ConferenceDataLocalDataSource
       final conferenceDataJson = sharedPreferences.getString(_conferenceDataKey);
 
       if (conferenceDataJson == null) {
-        throw Exception('No cached conference data found');
+        return ConferenceDataModel();
       }
 
       return ConferenceDataModel.fromJson(jsonDecode(conferenceDataJson) as Map<String, dynamic>);
