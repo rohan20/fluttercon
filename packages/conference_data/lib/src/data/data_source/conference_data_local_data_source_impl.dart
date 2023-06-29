@@ -52,7 +52,7 @@ class ConferenceDataLocalDataSourceImpl implements ConferenceDataLocalDataSource
       final agendaJson = sharedPreferences.getString(_agendaKey);
 
       if (agendaJson == null) {
-        throw Exception('No cached agenda found');
+        return AgendaModel();
       }
 
       return AgendaModel.fromJson(jsonDecode(agendaJson) as List<dynamic>);
