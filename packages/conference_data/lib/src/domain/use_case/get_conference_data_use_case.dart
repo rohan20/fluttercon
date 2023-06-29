@@ -14,12 +14,12 @@ class GetConferenceDataUseCase extends UseCase<ConferenceData, bool> {
   Future<Result<Failure, ConferenceData>> call([bool? forceLatest]) async {
     final conferenceDataRepository = injector.get<ConferenceDataRepository>();
 
+    final dataSource = (forceLatest ?? false) ? ConferenceDataSource.latest : null;
+
     final conferenceDataAndAgendaResults = await Future.wait(
       [
-        conferenceDataRepository.getConferenceData(
-          source: (forceLatest ?? false) ? ConferenceDataSource.latest : null,
-        ),
-        conferenceDataRepository.getAgenda(),
+        conferenceDataRepository.getConferenceData(source: dataSource),
+        conferenceDataRepository.getAgenda(source: dataSource),
       ],
     );
 

@@ -16,8 +16,6 @@ class ConferenceDataRepositoryImpl implements ConferenceDataRepository {
   final ConferenceDataRemoteDataSource conferenceDataRemoteDataSource;
   final ConferenceDataLocalDataSource conferenceDataLocalDataSource;
 
-  // TODO(rohan20): Simplify with just a single try-catch that uses private exceptions which are rethrown.
-  // TODO(rohan20): Apply caching same logic to getAgenda() too.
   // TODO(rohan20): Remove print statements.
   @override
   Future<Result<Failure, ConferenceData>> getConferenceData({
@@ -71,15 +69,53 @@ class ConferenceDataRepositoryImpl implements ConferenceDataRepository {
   }
 
   @override
-  Future<Result<Failure, Agenda>> getAgenda() async {
+  Future<Result<Failure, Agenda>> getAgenda({
+    ConferenceDataSource? source = ConferenceDataSource.cached,
+  }) async {
     try {
-      final agendaModel = await conferenceDataRemoteDataSource.getAgenda();
+      final sourceOrFallbackSource = source ?? ConferenceDataSource.cached;
 
-      return Success(Agenda.fromAgendaModel(agendaModel));
+      try {
+        if (sourceOrFallbackSource == ConferenceDataSource.cached) {
+          print('XXX Getting cached agenda...');
+          final cachedAgendaModel = await conferenceDataLocalDataSource.getAgenda();
+
+          if (cachedAgendaModel.sessions.isNotEmpty) {
+            print('XXX Returning cached agenda because source = cached');
+            return Success(Agenda.fromAgendaModel(cachedAgendaModel));
+          } else {
+            print('XXX Returning latest agenda because cached sessions were empty');
+            return Success(await _getLatestAgendaAndCacheIt());
+          }
+        } else {
+          print('XXX Returning latest agenda because source = latest');
+          return Success(await _getLatestAgendaAndCacheIt());
+        }
+      } on ApiClientError {
+        print('XXX Error ApiClientError 1');
+        rethrow;
+      } catch (e, stackTrace) {
+        print('XXX Returning latest agenda since something went wrong: $e, $stackTrace');
+        return Success(await _getLatestAgendaAndCacheIt());
+      }
     } on ApiClientError {
+      print('XXX Error ApiClientError 2');
       return const Error(ServerFailure());
-    } catch (_) {
+    } catch (e) {
+      print('XXX Error $e');
       return const Error(LocalFailure());
     }
+  }
+
+  Future<Agenda> _getLatestAgendaAndCacheIt() async {
+    final agendaModel = await conferenceDataRemoteDataSource.getAgenda();
+
+    try {
+      await conferenceDataLocalDataSource.saveAgenda(agendaModel);
+    } catch (_) {
+      return Agenda.fromAgendaModel(agendaModel);
+    }
+
+    return Agenda.fromAgendaModel(agendaModel);
   }
 }

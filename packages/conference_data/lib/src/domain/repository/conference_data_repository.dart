@@ -6,5 +6,5 @@ import 'package:util/util.dart';
 abstract class ConferenceDataRepository {
   Future<Result<Failure, ConferenceData>> getConferenceData({ConferenceDataSource? source});
 
-  Future<Result<Failure, Agenda>> getAgenda();
+  Future<Result<Failure, Agenda>> getAgenda({ConferenceDataSource? source});
 }
