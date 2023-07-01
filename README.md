@@ -1,10 +1,14 @@
 # fluttercon
 
-iOS & Android app for Fluttercon Berlin 2023, built with Flutter.
-
-[fluttercon.dev](https://fluttercon.dev)
+iOS, Android and macOS app for [Fluttercon Berlin 2023](https://fluttercon.dev), built with Flutter.
 
 [![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
+
+### Download Links
+
+| iOS | Android | macOS |
+|:--:|:--:|:--:|
+|[<img src="store-badges/appstore.png" height=75 width=250 />](https://apps.apple.com/us/app/fluttercon-berlin-2023/id6450055384)|[<img src="store-badges/playstore.png" height=100 width=250 />](https://play.google.com/store/apps/details?id=com.rohantaneja.fluttercon)|Not published|
 
 ### Screenshots
 
