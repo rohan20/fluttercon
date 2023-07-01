@@ -80,7 +80,7 @@ class ConferenceDataRepositoryImpl implements ConferenceDataRepository {
         }
       } on ApiClientError {
         rethrow;
-      } catch (e, stackTrace) {
+      } catch (e) {
         return Success(await _getLatestAgendaAndCacheIt());
       }
     } on ApiClientError {
