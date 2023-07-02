@@ -2,7 +2,7 @@ name: fluttercon
 description: Fluttercon Berlin 2023
 publish_to: 'none'
 
-version: 1.0.0+3
+version: 1.1.0+5
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
