@@ -10,7 +10,6 @@ class SessionsTabBarView extends StatefulWidget {
   const SessionsTabBarView({
     required this.day1SessionsSortedByStartTime,
     required this.day2SessionsSortedByStartTime,
-    required this.day3SessionsSortedByStartTime,
     required this.speakers,
     required this.categories,
     required this.rooms,
@@ -20,7 +19,6 @@ class SessionsTabBarView extends StatefulWidget {
 
   final List<Session> day1SessionsSortedByStartTime;
   final List<Session> day2SessionsSortedByStartTime;
-  final List<Session> day3SessionsSortedByStartTime;
   final List<Speaker> speakers;
   final List<Category> categories;
   final List<Room> rooms;
@@ -39,16 +37,14 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: _initialIndex);
+    _tabController = TabController(length: 2, vsync: this, initialIndex: _initialIndex);
   }
 
   int get _initialIndex {
     final now = DateTime.now();
 
-    if (now.isAfter(ConferenceMetadata.day3)) {
+    if (now.isAfter(ConferenceMetadata.day2)) {
       return 0;
-    } else if (now.isAfter(ConferenceMetadata.day2)) {
-      return 2;
     } else if (now.isAfter(ConferenceMetadata.day1)) {
       return 1;
     } else {
@@ -90,13 +86,6 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
                     isSearchMode: isSearchMode,
                   ),
                 ),
-                Tab(
-                  text: _getTabText(
-                    dateText: tabDateFormat.format(ConferenceMetadata.day3),
-                    sessionsCount: widget.day3SessionsSortedByStartTime.length,
-                    isSearchMode: isSearchMode,
-                  ),
-                ),
               ],
             );
           },
@@ -114,13 +103,6 @@ class _SessionsTabBarViewState extends State<SessionsTabBarView> with SingleTick
               ),
               _SessionsList(
                 sessions: widget.day2SessionsSortedByStartTime,
-                speakers: widget.speakers,
-                categories: widget.categories,
-                rooms: widget.rooms,
-                emptySessionsMessage: widget.emptySessionsMessage,
-              ),
-              _SessionsList(
-                sessions: widget.day3SessionsSortedByStartTime,
                 speakers: widget.speakers,
                 categories: widget.categories,
                 rooms: widget.rooms,

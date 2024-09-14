@@ -1,15 +1,15 @@
 class ConferenceMetadata {
   const ConferenceMetadata._();
 
-  static final DateTime day1 = DateTime(2023, 07, 05, 20);
-  static final DateTime day2 = DateTime(2023, 07, 06, 20);
-  static final DateTime day3 = DateTime(2023, 07, 07, 20);
+  static final DateTime day1 = DateTime(2024, 09, 19, 20);
+  static final DateTime day2 = DateTime(2024, 09, 20, 20);
 
-  static const String lightningTalkId = '164900';
-  static const String sessionId = '164901';
-  static const String workshopId = '164902';
-  static const String keynoteId = '164908';
-  static const String panelDiscussionId = '164907';
+  // Get these from 'https://sessionize.com/api/v2/<id_here>/view/all'
+  static const String lightningTalkId = '254923';
+  static const String sessionId = '254924';
+  static const String workshopId = '254925';
+  static const String keynoteId = '254927';
+  static const String panelDiscussionId = '254926';
 
-  static const String categoryTypeSessionFormatId = '48321';
+  static const String categoryTypeSessionFormatId = '72066';
 }

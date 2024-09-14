@@ -5,8 +5,8 @@ import 'package:conference_data/src/data/model/agenda_model.dart';
 import 'package:conference_data/src/data/model/conference_data_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _conferenceDataKey = 'conferenceData';
-const _agendaKey = 'agenda';
+const _conferenceDataKey = 'conferenceData-2024-usa';
+const _agendaKey = 'agenda-2024-usa';
 
 class ConferenceDataLocalDataSourceImpl implements ConferenceDataLocalDataSource {
   ConferenceDataLocalDataSourceImpl(this.sharedPreferences);
@@ -17,6 +17,8 @@ class ConferenceDataLocalDataSourceImpl implements ConferenceDataLocalDataSource
   Future<void> saveConferenceData(ConferenceDataModel conferenceDataModel) async {
     try {
       await sharedPreferences.setString(_conferenceDataKey, jsonEncode(conferenceDataModel.toJson()));
+      // Delete legacy data from older conferences (applicable in case the user didn't uninstall the app between conferences)
+      await sharedPreferences.remove('conferenceData');
     } catch (e) {
       throw Exception(e);
     }
@@ -41,6 +43,8 @@ class ConferenceDataLocalDataSourceImpl implements ConferenceDataLocalDataSource
   Future<void> saveAgenda(AgendaModel agendaModel) async {
     try {
       await sharedPreferences.setString(_agendaKey, jsonEncode(agendaModel.toJson()));
+      // Delete legacy data from older conferences (applicable in case the user didn't uninstall the app between conferences)
+      await sharedPreferences.remove('agenda');
     } catch (e) {
       throw Exception(e);
     }
