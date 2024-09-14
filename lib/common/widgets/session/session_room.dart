@@ -19,6 +19,7 @@ class SessionRoom extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade800, width: 0.2),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.location_on, size: 16, color: Colors.grey.shade400),
             const SizedBox(width: 4),
