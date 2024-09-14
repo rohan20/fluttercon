@@ -3,7 +3,6 @@ class ConferenceMetadata {
 
   static final DateTime day1 = DateTime(2023, 07, 05, 20);
   static final DateTime day2 = DateTime(2023, 07, 06, 20);
-  static final DateTime day3 = DateTime(2023, 07, 07, 20);
 
   static const String lightningTalkId = '164900';
   static const String sessionId = '164901';

@@ -87,12 +87,6 @@ class AppState {
     return day2SessionsSortedByStartTime.where(_isFavouriteSession).toList();
   }
 
-  List<Session> get day3SessionsSortedByStartTime => _getSessionsForDay(ConferenceMetadata.day3);
-
-  List<Session> get day3FavouriteSessionsSortedByStartTime {
-    return day3SessionsSortedByStartTime.where(_isFavouriteSession).toList();
-  }
-
   bool _isFavouriteSession(Session session) => favouriteSessionIds.contains(session.id);
 
   bool isFavouriteSession({required String id}) => favouriteSessionIds.contains(id);

@@ -23,7 +23,6 @@ class FavouriteSessionsPage extends StatelessWidget {
           return SessionsTabBarView(
             day1SessionsSortedByStartTime: state.day1FavouriteSessionsSortedByStartTime,
             day2SessionsSortedByStartTime: state.day2FavouriteSessionsSortedByStartTime,
-            day3SessionsSortedByStartTime: state.day3FavouriteSessionsSortedByStartTime,
             speakers: state.speakers,
             categories: state.categories,
             rooms: state.rooms,
