@@ -22,12 +22,14 @@ platform :android do
 
   desc "Upload Production App to Google Play Store"
   lane :upload_production do
+    flavor = "production"
+
     build_app(app_id: APP_ID_PRODUCTION, should_build_app_bundle: true)
     upload_to_play_store(
       track: "internal",
       package_name: APP_ID_PRODUCTION,
       json_key: "./fastlane/service_account.json",
-      aab: "../build/app/outputs/bundle/Release/app-release.aab",
+      aab: "../build/app/outputs/bundle/#{flavor}Release/app-#{flavor}-release.aab",
     )
   end
 
